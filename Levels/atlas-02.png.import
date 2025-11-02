@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8mhbqf1mjuwg"
-path="res://.godot/imported/Green.png-4254c02b7a6db37b6b0283b611fd6a77.ctex"
+uid="uid://bj4lwmw5aog6l"
+path="res://.godot/imported/atlas-02.png-1da0b187f1f9c31f61bb7ab7a0204b1b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Levels/Green.png"
-dest_files=["res://.godot/imported/Green.png-4254c02b7a6db37b6b0283b611fd6a77.ctex"]
+source_file="res://Levels/atlas-02.png"
+dest_files=["res://.godot/imported/atlas-02.png-1da0b187f1f9c31f61bb7ab7a0204b1b.ctex"]
 
 [params]
 

@@ -1,0 +1,88 @@
+[gd_scene load_steps=11 format=3 uid="uid://c8lphal32dpu2"]
+
+[ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Scripts/LensManager.gd" id="1_v4e8h"]
+[ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/test_level/test_normal.tscn" id="2_hb8cu"]
+[ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/test_level/test_echo.tscn" id="3_v4e8h"]
+[ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/test_level/test_visceral.tscn" id="4_hb8cu"]
+[ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="5_55381"]
+[ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/test_level/test_truth.tscn" id="5_sbcer"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
+viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_afen0"]
+viewport_path = NodePath("CanvasLayer/Texture_Echo/Viewport_Echo")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_w4v7x"]
+viewport_path = NodePath("CanvasLayer/Texture_Visceral/Viewport_Visceral")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mkyii"]
+viewport_path = NodePath("CanvasLayer/Texture_Truth/Viewport_Truth")
+
+[node name="Root" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("1_v4e8h")
+
+[node name="Texture_Normal" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_f87w0")
+
+[node name="Viewport_Normal" type="SubViewport" parent="CanvasLayer/Texture_Normal"]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="TestNormal" parent="CanvasLayer/Texture_Normal/Viewport_Normal" instance=ExtResource("2_hb8cu")]
+
+[node name="Texture_Echo" type="TextureRect" parent="CanvasLayer"]
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_afen0")
+
+[node name="Viewport_Echo" type="SubViewport" parent="CanvasLayer/Texture_Echo"]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="TestEcho" parent="CanvasLayer/Texture_Echo/Viewport_Echo" instance=ExtResource("3_v4e8h")]
+
+[node name="Texture_Visceral" type="TextureRect" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_w4v7x")
+
+[node name="Viewport_Visceral" type="SubViewport" parent="CanvasLayer/Texture_Visceral"]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="TestVisceral" parent="CanvasLayer/Texture_Visceral/Viewport_Visceral" instance=ExtResource("4_hb8cu")]
+
+[node name="Texture_Truth" type="TextureRect" parent="CanvasLayer"]
+visible = false
+z_index = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_mkyii")
+
+[node name="Viewport_Truth" type="SubViewport" parent="CanvasLayer/Texture_Truth"]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_sbcer")]
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("5_55381")]
+position = Vector2(64, -521)

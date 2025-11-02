@@ -39,9 +39,9 @@ func _input(event:InputEvent):
 	if event.is_action_pressed("switch_truth"):
 		switch_lens("truth")
 
-func switch_lens(name: String):
+func switch_lens(_name: String):
 	var player: CharacterBody2D = get_tree().get_first_node_in_group("Player")
-	var lens_index = LENSES[name]
+	var lens_index = LENSES[_name]
 	# --- 1. ПЕРЕКЛЮЧАЕМ ФИЗИКУ ИГРОКА ---
 	if player != null:
 		player.collision_mask = 0 
@@ -52,7 +52,7 @@ func switch_lens(name: String):
 	for key in viewports:
 		var viewport: SubViewport = viewports[key]
 		var rect: TextureRect = viewport.get_parent() as TextureRect
-		var is_active = (key == name)
+		var is_active = (key == _name)
 		viewport.render_target_update_mode = (
 			SubViewport.UPDATE_ALWAYS if is_active else SubViewport.UPDATE_DISABLED
 		)
@@ -60,4 +60,4 @@ func switch_lens(name: String):
 		if is_active:
 			viewport.add_child.call_deferred(player)
 
-	print("Switched lens: ", name)
+	print("Switched lens: ", _name)
