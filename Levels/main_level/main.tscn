@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=3 uid="uid://c8lphal32dpu2"]
 
-[ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Scripts/LensManager.gd" id="1_v4e8h"]
-[ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/test_level/test_normal.tscn" id="2_hb8cu"]
-[ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/test_level/test_echo.tscn" id="3_v4e8h"]
-[ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/test_level/test_visceral.tscn" id="4_hb8cu"]
-[ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="5_55381"]
-[ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/test_level/test_truth.tscn" id="5_sbcer"]
+[ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Scripts/LensManager.gd" id="1_63qhi"]
+[ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
+[ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/main_level/main_echo.tscn" id="3_d1nr7"]
+[ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/main_level/main_visceral.tscn" id="4_pltfe"]
+[ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
+[ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="6_kpj74"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -22,7 +22,7 @@ viewport_path = NodePath("CanvasLayer/Texture_Truth/Viewport_Truth")
 [node name="Root" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("1_v4e8h")
+script = ExtResource("1_63qhi")
 
 [node name="Texture_Normal" type="TextureRect" parent="CanvasLayer"]
 anchors_preset = 15
@@ -36,7 +36,7 @@ texture = SubResource("ViewportTexture_f87w0")
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
-[node name="TestNormal" parent="CanvasLayer/Texture_Normal/Viewport_Normal" instance=ExtResource("2_hb8cu")]
+[node name="TestNormal" parent="CanvasLayer/Texture_Normal/Viewport_Normal" instance=ExtResource("2_dsr8i")]
 
 [node name="Texture_Echo" type="TextureRect" parent="CanvasLayer"]
 z_index = 1
@@ -51,7 +51,7 @@ texture = SubResource("ViewportTexture_afen0")
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
-[node name="TestEcho" parent="CanvasLayer/Texture_Echo/Viewport_Echo" instance=ExtResource("3_v4e8h")]
+[node name="TestEcho" parent="CanvasLayer/Texture_Echo/Viewport_Echo" instance=ExtResource("3_d1nr7")]
 
 [node name="Texture_Visceral" type="TextureRect" parent="CanvasLayer"]
 z_index = 2
@@ -66,7 +66,7 @@ texture = SubResource("ViewportTexture_w4v7x")
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
-[node name="TestVisceral" parent="CanvasLayer/Texture_Visceral/Viewport_Visceral" instance=ExtResource("4_hb8cu")]
+[node name="TestVisceral" parent="CanvasLayer/Texture_Visceral/Viewport_Visceral" instance=ExtResource("4_pltfe")]
 
 [node name="Texture_Truth" type="TextureRect" parent="CanvasLayer"]
 visible = false
@@ -82,7 +82,7 @@ texture = SubResource("ViewportTexture_mkyii")
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
-[node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_sbcer")]
+[node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_7uxuk")]
 
-[node name="Player" parent="." groups=["Player"] instance=ExtResource("5_55381")]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
 position = Vector2(64, -521)

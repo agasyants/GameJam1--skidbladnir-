@@ -1,13 +1,13 @@
 extends CharacterBody2D
 class_name Player
 
-# Константы движения - быстрые и резкие!
+# Константы движения
 const SPEED = 600.0
 const JUMP_VELOCITY = -1600.0
-const ACCELERATION = 4000.0  # Мгновенный разгон
-const FRICTION = 4000.0      # Быстрая остановка
-const GRAVITY = 3200.0       # Тяжелая гравитация
-const FAST_FALL_GRAVITY = 3500.0  # Ещё быстрее падаем
+const ACCELERATION = 4000.0
+const FRICTION = 4000.0
+const GRAVITY = 3200.0
+const FAST_FALL_GRAVITY = 3500.0
 
 # Дополнительные параметры
 const COYOTE_TIME = 0.08
@@ -100,3 +100,14 @@ func get_state_name() -> String:
 		State.JUMP: return "jump"
 		State.FALL: return "fall"
 		_: return "idle"
+
+func die():
+	# Загружаем данные последнего чекпоинта
+	var checkpoint = GameManager.get_checkpoint_data()
+
+	if checkpoint.is_empty():
+		get_tree().reload_current_scene()  # Перезапуск уровня
+	else:
+		# Восстанавливаем состояние
+		global_position = checkpoint["position"]
+		eye_state = checkpoint["eyes"]

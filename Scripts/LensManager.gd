@@ -38,6 +38,10 @@ func _input(event:InputEvent):
 		switch_lens("visceral")
 	if event.is_action_pressed("switch_truth"):
 		switch_lens("truth")
+	if event.is_action_pressed("restart"):
+		var player: Player = get_tree().get_first_node_in_group("Player")
+		if player != null:
+			player.die()
 
 func switch_lens(_name: String):
 	var player: CharacterBody2D = get_tree().get_first_node_in_group("Player")
