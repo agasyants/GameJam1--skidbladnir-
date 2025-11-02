@@ -19,6 +19,8 @@ enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
 var eye_state = 0
 
+@onready var camera: Camera2D = get_viewport().get_camera_2d()
+
 # Таймеры
 var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
@@ -30,7 +32,13 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_update_state()
 	
+	var prev = global_position
+	
 	move_and_slide()
+	
+	camera.position = camera.position - global_position + prev
+	
+	camera.position = camera.position.lerp(Vector2.ZERO, 1.0 - exp(-10.0 * delta))
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
