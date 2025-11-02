@@ -48,8 +48,6 @@ func switch_lens(name: String):
 		player.set_collision_mask_value(lens_index + 1, true)
 		var p = player.get_parent()
 		p.remove_child.call_deferred(player)
-	else:
-		print(player)
 	
 	for key in viewports:
 		var viewport: SubViewport = viewports[key]

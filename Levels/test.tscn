@@ -15,6 +15,7 @@ texture = ExtResource("2_p4erq")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_mkyii"]
+tile_size = Vector2i(50, 50)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_w4v7x")
 
@@ -32,6 +33,7 @@ texture = ExtResource("3_f87w0")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_afen0"]
+tile_size = Vector2i(50, 50)
 physics_layer_0/collision_layer = 2
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_f87w0")
@@ -46,6 +48,7 @@ texture = ExtResource("3_afen0")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_oe5jq"]
+tile_size = Vector2i(50, 50)
 physics_layer_0/collision_layer = 4
 physics_layer_0/collision_mask = 4
 sources/0 = SubResource("TileSetAtlasSource_mkyii")
@@ -67,7 +70,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_f87w0")
 
 [node name="Viewport_Normal" type="SubViewport" parent="CanvasLayer/Texture_Normal"]
-size = Vector2i(720, 480)
+size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
 [node name="TileMap_Normal" type="TileMapLayer" parent="CanvasLayer/Texture_Normal/Viewport_Normal"]
@@ -84,7 +87,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_afen0")
 
 [node name="Viewport_Echo" type="SubViewport" parent="CanvasLayer/Texture_Echo"]
-size = Vector2i(720, 480)
+size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
 [node name="TileMap_Echo" type="TileMapLayer" parent="CanvasLayer/Texture_Echo/Viewport_Echo"]
@@ -103,7 +106,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_w4v7x")
 
 [node name="Viewport_Visceral" type="SubViewport" parent="CanvasLayer/Texture_Visceral"]
-size = Vector2i(720, 480)
+size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
 [node name="TileMap_Visceral" type="TileMapLayer" parent="CanvasLayer/Texture_Visceral/Viewport_Visceral"]
@@ -123,7 +126,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_mkyii")
 
 [node name="Viewport_Truth" type="SubViewport" parent="CanvasLayer/Texture_Truth"]
-size = Vector2i(720, 480)
+size = Vector2i(1920, 1080)
 render_target_update_mode = 0
 
 [node name="TileMap_Truth" type="TileMapLayer" parent="CanvasLayer/Texture_Truth/Viewport_Truth"]
@@ -131,4 +134,4 @@ visible = false
 tile_map_data = PackedByteArray("AAD/////AAAAAAAAAAD+////AAAAAAAAAAD9////AAAAAAAAAAD8////AAAAAAAAAAD7////AAAAAAAAAAD6////AAAAAAAAAAD5////AAAAAAAAAAD4////AAAAAAAAAAD3////AAAAAAAAAAD2////AAAAAAAAAAD1////AAAAAAAAAAD0////AAAAAAAAAADz////AAAAAAAAAADy////AAAAAAAAAADx////AAAAAAAAAADw////AAAAAAAAAADv////AAAAAAAAAADu////AAAAAAAAAADt////AAAAAAAAAADs////AAAAAAAAAADr////AAAAAAAAAADq////AAAAAAAAAADp////AAAAAAAAAADo////AAAAAAAAAADn////AAAAAAAAAADm////AAAAAAAAAADl////AAAAAAAAAADk////AAAAAAAAAADj////AAAAAAAAAAAAAP//AAAAAAAAAAABAP//AAAAAAAAAAACAP//AAAAAAAAAAADAP//AAAAAAAAAAAEAP//AAAAAAAAAAAFAP//AAAAAAAAAAAGAP//AAAAAAAAAAAHAP//AAAAAAAAAAAIAP//AAAAAAAAAAAJAP//AAAAAAAAAAAKAP//AAAAAAAAAAALAP//AAAAAAAAAAAMAP//AAAAAAAAAAANAP//AAAAAAAAAAAOAP//AAAAAAAAAAAPAP//AAAAAAAAAAAQAP//AAAAAAAAAAARAP//AAAAAAAAAAASAP//AAAAAAAAAAATAP//AAAAAAAAAAAUAP//AAAAAAAAAAAVAP//AAAAAAAAAAAWAP//AAAAAAAAAAAXAP//AAAAAAAAAAAYAP//AAAAAAAAAAAYAAAAAAAAAAAAAAAXAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAVAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAATAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAAAAAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAD+/wAAAAAAAAAAAAD9/wAAAAAAAAAAAAD8/wAAAAAAAAAAAAD7/wAAAAAAAAAAAAD6/wAAAAAAAAAAAAD5/wAAAAAAAAAAAAD4/wAAAAAAAAAAAAD3/wAAAAAAAAAAAAD2/wAAAAAAAAAAAAD1/wAAAAAAAAAAAAD0/wAAAAAAAAAAAADz/wAAAAAAAAAAAADy/wAAAAAAAAAAAADw/wAAAAAAAAAAAADv/wAAAAAAAAAAAADu/wAAAAAAAAAAAADq/wAAAAAAAAAAAADp/wAAAAAAAAAAAADo/wAAAAAAAAAAAADn/wAAAAAAAAAAAADm/wAAAAAAAAAAAADl/wAAAAAAAAAAAADk/wAAAAAAAAAAAADj/wAAAAAAAAAAAADr/wAAAAAAAAAAAADs/wAAAAAAAAAAAADt/wAAAAAAAAAAAADx/wAAAAAAAAAAAAANAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAARAAAAAAAAAAAAAAA=")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("2_uvd1l")]
-position = Vector2(520, -69)
+position = Vector2(64, -521)

@@ -1,11 +1,11 @@
 extends CharacterBody2D
 class_name Player
 
-const SPEED = 250.0
-const JUMP_VELOCITY = -400.0
+const SPEED = 600.0
+const JUMP_VELOCITY = -700.0
 const ACCELERATION = 1500.0
 const FRICTION = 5000.0
-var gravity = 800
+var gravity = 1200
 
 var eye_state = 0
 var player_state = 0
