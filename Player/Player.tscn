@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://do4322ymwf3rv" path="res://Player/idle-0.png" id="2_q3lat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3qydi"]
-size = Vector2(50, 100)
+size = Vector2(36, 99)
 
 [sub_resource type="Animation" id="Animation_tok1r"]
 length = 0.001
@@ -74,6 +74,7 @@ hframes = 5
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0.5)
 shape = SubResource("RectangleShape2D_3qydi")
 
 [node name="Camera2D" type="Camera2D" parent="."]

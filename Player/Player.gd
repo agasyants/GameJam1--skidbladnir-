@@ -3,10 +3,10 @@ class_name Player
 
 # Константы движения
 const SPEED = 600.0
-const JUMP_VELOCITY = -1600.0
+const JUMP_VELOCITY = -1500.0
 const ACCELERATION = 4000.0
 const FRICTION = 4000.0
-const GRAVITY = 3200.0
+const GRAVITY = 3400.0
 const FAST_FALL_GRAVITY = 3500.0
 
 # Дополнительные параметры
@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	
 	camera.position = camera.position - global_position + prev
 	
-	camera.position = camera.position.lerp(Vector2.ZERO, 1.0 - exp(-10.0 * delta))
+	camera.position = camera.position.lerp(Vector2(0, -120), 1.0 - exp(-10.0 * delta))
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
@@ -60,16 +60,15 @@ func _apply_gravity(delta: float) -> void:
 
 func _handle_horizontal_movement(delta: float) -> void:
 	var input_axis = Input.get_axis("ui_left", "ui_right")
-	
+	var current_accel = ACCELERATION if is_on_floor() else ACCELERATION * 0.8
+
 	if input_axis != 0:
-		# МГНОВЕННОЕ ускорение
-		velocity.x = move_toward(velocity.x, SPEED * input_axis, ACCELERATION * delta)
-		
-		if has_node("Sprite2D"):
-			$Sprite2D.flip_h = input_axis < 0
+		velocity.x = move_toward(velocity.x, SPEED * input_axis, current_accel * delta)
+		$Sprite2D.flip_h = input_axis < 0
 	else:
-		# Быстрое торможение
-		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+		var current_friction = FRICTION if is_on_floor() else FRICTION * 0.4
+		velocity.x = move_toward(velocity.x, 0, current_friction * delta)
+
 
 func _handle_jump() -> void:
 	if Input.is_action_just_pressed("jump"):
