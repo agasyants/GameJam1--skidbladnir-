@@ -20,3 +20,11 @@ func load_game() -> Dictionary:
 		if parse_result == OK:
 			return json.data
 	return {}
+
+func delete_save_file():
+	if FileAccess.file_exists(save_path):
+		var dir = DirAccess.open("user://")
+		dir.remove(save_path)
+		print("Файл сохранения удален")
+	else:
+		print("Файл сохранения не существует")

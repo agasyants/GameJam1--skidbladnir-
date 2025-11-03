@@ -62,7 +62,6 @@ func _ready():
 func _process(delta):
 	if is_transitioning:
 		transition_progress += delta * transition_speed
-		
 		if transition_progress >= 1.0:
 			finish_transition()
 		else:
@@ -81,6 +80,8 @@ func _input(event: InputEvent):
 			switch_lens("truth")
 		if event.is_action_pressed("restart"):
 			player.die()
+		if event.is_action_pressed("pause"):
+			get_tree().paused = true
 
 func switch_lens(_name: String):
 	if lens_names[current_lens] == _name:
@@ -134,7 +135,6 @@ func start_transition(_name: String):
 		move_player_to_viewport(to_name)
 		
 	MusicManager.play_world_music(to_name)
-	
 	print("Starting transition: ", from_name, " -> ", to_name)
 
 func finish_transition():
@@ -147,7 +147,6 @@ func finish_transition():
 	
 	# Показываем финальную текстуру
 	texture_rects[lens_name].visible = true
-	
 	print("Transition complete: ", lens_name)
 
 func update_player_physics(lens_index: int):

@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/main_level/main_echo.tscn" id="3_d1nr7"]
 [ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/main_level/main_visceral.tscn" id="4_pltfe"]
 [ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
+[ext_resource type="PackedScene" uid="uid://b1kbx13hxs2bs" path="res://UI/pause.tscn" id="6_dsr8i"]
 [ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="6_kpj74"]
-[ext_resource type="PackedScene" uid="uid://b1kbx13hxs2bs" path="res://UI/pause.tscn" id="7_dsr8i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -85,13 +85,8 @@ render_target_update_mode = 0
 
 [node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_7uxuk")]
 
+[node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
+z_index = 1000
+
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
 position = Vector2(-1321, -119)
-
-[node name="Pause" parent="." instance=ExtResource("7_dsr8i")]
-process_mode = 3
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
