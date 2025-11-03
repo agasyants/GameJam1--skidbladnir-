@@ -20,6 +20,11 @@ enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
 var eye_state = 3
 
+var camera_offset: Vector2 = Vector2(0, -140)
+
+func set_camera_offset(offset):
+	camera_offset = offset
+
 @onready var camera: Camera2D = get_viewport().get_camera_2d()
 
 # Таймеры
@@ -48,7 +53,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	camera.position = camera.position - global_position + prev
-	camera.position = camera.position.lerp(Vector2(0, -140), 1.0 - exp(-10.0 * delta))
+	camera.position = camera.position.lerp(camera_offset, 1.0 - exp(-10.0 * delta))
 	
 	if test_move(global_transform, Vector2.ZERO):
 		stuck_timer += delta

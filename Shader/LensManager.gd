@@ -76,8 +76,8 @@ func _input(event: InputEvent):
 			switch_lens("echo")
 		if event.is_action_pressed("switch_visceral") and player.eye_state > 1:
 			switch_lens("visceral")
-		if event.is_action_pressed("switch_truth") and player.eye_state > 2:
-			switch_lens("truth")
+		#if event.is_action_pressed("switch_truth") and player.eye_state > 2:
+			#switch_lens("truth")
 		if event.is_action_pressed("restart"):
 			player.die()
 		if event.is_action_pressed("pause"):

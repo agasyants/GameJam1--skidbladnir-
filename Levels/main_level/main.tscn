@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
 [ext_resource type="PackedScene" uid="uid://b1kbx13hxs2bs" path="res://UI/pause.tscn" id="6_dsr8i"]
 [ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="6_kpj74"]
-[ext_resource type="Shader" path="res://Shader/viniet.gdshader" id="7_d1nr7"]
-[ext_resource type="Script" path="res://Shader/VinietController.gd" id="8_pltfe"]
+[ext_resource type="Shader" uid="uid://dsi1c6aevivx2" path="res://Shader/viniet.gdshader" id="7_d1nr7"]
+[ext_resource type="Script" uid="uid://dhcekjbfkfyp0" path="res://Shader/VinietController.gd" id="8_pltfe"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -93,9 +93,6 @@ render_target_update_mode = 0
 
 [node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_7uxuk")]
 
-[node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
-z_index = 1000
-
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["V"]]
 z_index = 200
 material = SubResource("ShaderMaterial_pltfe")
@@ -106,6 +103,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("8_pltfe")
+
+[node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
+z_index = 1000
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
 position = Vector2(-1321, -119)
