@@ -98,8 +98,10 @@ func _update_state() -> void:
 	if not is_on_floor():
 		if velocity.y < 0:
 			player_state = State.JUMP
+			animation_player.play("jump")
 		else:
 			player_state = State.FALL
+			animation_player.play("fall")
 	elif abs(velocity.x) > 10:
 		player_state = State.WALK
 		animation_player.play("walk")
