@@ -20,8 +20,3 @@ func load_game() -> Dictionary:
 		if parse_result == OK:
 			return json.data
 	return {}
-	
-#var game_data = {"eyes": 1, "level": 5, "position": {"x": 100, "y": 200}}
-#SaveManager.save_game(game_data)
-#var loaded = SaveManager.load_game()
-#print(loaded.get("score", 0))

@@ -27,6 +27,12 @@ var jump_buffer_timer = 0.0
 
 @onready var animation_player = $AnimationPlayer
 
+func _ready() -> void:
+	var loaded = SaveManager.load_game()
+	if loaded:
+		eye_state = loaded["eyes"]
+		global_position = Vector2(loaded["position_x"], loaded["position_y"])
+
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_apply_gravity(delta)
@@ -39,7 +45,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	camera.position = camera.position - global_position + prev
-	
 	camera.position = camera.position.lerp(Vector2(0, -140), 1.0 - exp(-10.0 * delta))
 
 func _apply_gravity(delta: float) -> void:
@@ -123,5 +128,5 @@ func die():
 		get_tree().reload_current_scene()  # Перезапуск уровня
 	else:
 		# Восстанавливаем состояние
-		global_position = checkpoint["position"]
+		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
 		eye_state = checkpoint["eyes"]
