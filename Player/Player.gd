@@ -25,6 +25,11 @@ var eye_state = 3
 var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
 
+@onready var animation_player = $AnimationPlayer
+
+func _ready() -> void:
+	animation_player.play("idle")
+
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_apply_gravity(delta)
@@ -98,8 +103,10 @@ func _update_state() -> void:
 			player_state = State.FALL
 	elif abs(velocity.x) > 10:
 		player_state = State.WALK
+		animation_player.play("walk")
 	else:
 		player_state = State.IDLE
+		animation_player.play("idle")
 
 func get_state_name() -> String:
 	match player_state:
