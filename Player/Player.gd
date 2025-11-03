@@ -12,7 +12,7 @@ const FAST_FALL_GRAVITY = 3500.0
 # Дополнительные параметры
 const COYOTE_TIME = 0.08
 const JUMP_BUFFER = 0.12
-const STUCK_TIME = 5.0
+const STUCK_TIME = 8.0
 const MAX_FALL_SPEED = 1400.0
 
 # Состояния
@@ -28,6 +28,7 @@ var jump_buffer_timer = 0.0
 var stuck_timer = 0.0
 
 @onready var animation_player = $AnimationPlayer
+@onready var viniet = get_tree().get_first_node_in_group("V")
 
 func _ready() -> void:
 	var loaded = SaveManager.load_game()
@@ -51,10 +52,14 @@ func _physics_process(delta: float) -> void:
 	
 	if test_move(global_transform, Vector2.ZERO):
 		stuck_timer += delta
+		viniet.set_intensity(stuck_timer/STUCK_TIME)
+		viniet.set_size1(1.1-stuck_timer/STUCK_TIME*0.7)
 		if stuck_timer > STUCK_TIME:
 			die()
 	else:
-		stuck_timer = 0
+		viniet.set_intensity(0.0)
+		viniet.set_size1(1.2)
+		stuck_timer = 0.0
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():

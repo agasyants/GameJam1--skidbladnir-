@@ -50,7 +50,6 @@ func play_world_music(track_name: String):
 	current_track_name = track_name
 
 	# 1. ЗАПИСЬ ПОЗИЦИИ: Получаем текущую позицию воспроизведения (в секундах)
-	# Если еще ничего не играет, позиция будет 0.0
 	var playback_position = current_player.get_playback_position()
 
 	# --- 2. Настройка нового плеера (Standby) ---

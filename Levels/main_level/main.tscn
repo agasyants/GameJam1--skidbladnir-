@@ -27,7 +27,6 @@ shader = ExtResource("7_d1nr7")
 shader_parameter/intensity = 0.5
 shader_parameter/size = 0.8
 shader_parameter/vignette_color = Color(0, 0, 0, 1)
-shader_parameter/animation_speed = 1.0
 
 [node name="Root" type="Node2D"]
 
@@ -97,10 +96,15 @@ render_target_update_mode = 0
 [node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
 z_index = 1000
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["V"]]
+z_index = 200
 material = SubResource("ShaderMaterial_pltfe")
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
 script = ExtResource("8_pltfe")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
