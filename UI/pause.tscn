@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1kbx13hxs2bs"]
+
+[ext_resource type="Script" uid="uid://bk2r6bdrvs4d8" path="res://UI/pause.gd" id="1_6wphx"]
+
+[node name="Pause" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6wphx")
+
+[node name="volume_slider" type="HSlider" parent="."]
+layout_mode = 1
+offset_left = 562.0
+offset_top = 498.0
+offset_right = 854.0
+offset_bottom = 514.0
+
+[node name="sfx_slider" type="HSlider" parent="."]
+layout_mode = 1
+offset_left = 562.0
+offset_top = 577.0
+offset_right = 854.0
+offset_bottom = 593.0
+
+[node name="resume_btn" type="Button" parent="."]
+layout_mode = 1
+offset_left = 562.0
+offset_top = 363.0
+offset_right = 706.0
+offset_bottom = 394.0
+text = "Продолжить"
+
+[node name="restart_btn" type="Button" parent="."]
+layout_mode = 1
+offset_left = 562.0
+offset_top = 409.0
+offset_right = 706.0
+offset_bottom = 440.0
+text = "Новая игра"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 465.0
+offset_right = 626.0
+offset_bottom = 488.0
+text = "Музыка"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 541.0
+offset_right = 675.0
+offset_bottom = 564.0
+text = "Спецэффекты"

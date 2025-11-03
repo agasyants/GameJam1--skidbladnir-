@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c8lphal32dpu2"]
+[gd_scene load_steps=12 format=3 uid="uid://c8lphal32dpu2"]
 
 [ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Shader/LensManager.gd" id="1_63qhi"]
 [ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/main_level/main_visceral.tscn" id="4_pltfe"]
 [ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
 [ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="6_kpj74"]
+[ext_resource type="PackedScene" uid="uid://b1kbx13hxs2bs" path="res://UI/pause.tscn" id="7_dsr8i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -86,3 +87,11 @@ render_target_update_mode = 0
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
 position = Vector2(-1321, -119)
+
+[node name="Pause" parent="." instance=ExtResource("7_dsr8i")]
+process_mode = 3
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
