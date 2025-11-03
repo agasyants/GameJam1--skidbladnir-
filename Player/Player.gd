@@ -17,7 +17,7 @@ const MAX_FALL_SPEED = 1400.0
 # Состояния
 enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
-var eye_state = 0
+var eye_state = 3
 
 @onready var camera: Camera2D = get_viewport().get_camera_2d()
 
@@ -110,9 +110,7 @@ func get_state_name() -> String:
 		_: return "idle"
 
 func die():
-	# Загружаем данные последнего чекпоинта
 	var checkpoint = GameManager.get_checkpoint_data()
-
 	if checkpoint.is_empty():
 		get_tree().reload_current_scene()  # Перезапуск уровня
 	else:

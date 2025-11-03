@@ -1,7 +1,4 @@
-extends Area2D  # или Area3D для 3D
-
-# Сигнал для уведомления о активации (опционально)
-signal checkpoint_activated
+extends Area2D
 
 # Уникальный ID чекпоинта
 @export var checkpoint_id: String = "default"
@@ -29,5 +26,3 @@ func activate_checkpoint(player:Player):
 	# Отключаем дальнейшие активации
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.set_deferred("disabled", true)
-	
-	checkpoint_activated.emit()

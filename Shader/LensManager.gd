@@ -19,14 +19,18 @@ var lens_names = ["normal", "echo", "visceral", "truth"]
 var current_lens := 0
 var target_lens := 0
 var is_transitioning := false
+var transitioning_to := "normal"
 var transition_progress := 0.0
-var transition_speed := 1.5  # Скорость перехода
+var transition_speed := 1.4  # Скорость перехода
 
 var texture_rects = {}
 var transition_rect: ColorRect
 var transition_material: ShaderMaterial
 
+var player: Player
+
 func _ready():
+	player = get_tree().get_first_node_in_group("Player")
 	# Создаём ColorRect для эффекта перехода
 	transition_rect = ColorRect.new()
 	transition_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -66,23 +70,24 @@ func _process(delta):
 			transition_material.set_shader_parameter("progress", transition_progress)
 
 func _input(event: InputEvent):
-	if event.is_action_pressed("switch_normal"):
-		switch_lens("normal")
-	if event.is_action_pressed("switch_echo"):
-		switch_lens("echo")
-	if event.is_action_pressed("switch_visceral"):
-		switch_lens("visceral")
-	if event.is_action_pressed("switch_truth"):
-		switch_lens("truth")
-	if event.is_action_pressed("restart"):
-		var player: Player = get_tree().get_first_node_in_group("Player")
-		if player != null:
+	if player != null:
+		if event.is_action_pressed("switch_normal"):
+			switch_lens("normal")
+		if event.is_action_pressed("switch_echo") and player.eye_state > 0:
+			switch_lens("echo")
+		if event.is_action_pressed("switch_visceral") and player.eye_state > 1:
+			switch_lens("visceral")
+		if event.is_action_pressed("switch_truth") and player.eye_state > 2:
+			switch_lens("truth")
+		if event.is_action_pressed("restart"):
 			player.die()
 
 func switch_lens(_name: String):
-	if is_transitioning or lens_names[current_lens] == _name:
+	if lens_names[current_lens] == _name:
 		return
-	
+	if transitioning_to == _name:
+		switch_lens_instant(transitioning_to)
+		return
 	target_lens = LENSES[_name]
 	start_transition(_name)
 
@@ -90,10 +95,9 @@ func switch_lens_instant(_name: String):
 	"""Мгновенное переключение без анимации (для старта игры)"""
 	current_lens = LENSES[_name]
 	
-	var player: CharacterBody2D = get_tree().get_first_node_in_group("Player")
 	if player != null:
-		update_player_physics(player, current_lens)
-		move_player_to_viewport(player, _name)
+		update_player_physics(current_lens)
+		move_player_to_viewport(_name)
 	
 	# Показываем только текущую линзу
 	for key in texture_rects:
@@ -107,6 +111,7 @@ func start_transition(_name: String):
 	
 	var from_name = lens_names[current_lens]
 	var to_name = _name
+	transitioning_to = to_name
 	
 	# Настраиваем шейдер
 	var from_texture = viewports[from_name].get_texture()
@@ -124,10 +129,9 @@ func start_transition(_name: String):
 		texture_rects[key].visible = false
 	
 	# Сразу обновляем физику игрока
-	var player: CharacterBody2D = get_tree().get_first_node_in_group("Player")
 	if player != null:
-		update_player_physics(player, target_lens)
-		move_player_to_viewport(player, to_name)
+		update_player_physics(target_lens)
+		move_player_to_viewport(to_name)
 	
 	print("Starting transition: ", from_name, " -> ", to_name)
 
@@ -144,11 +148,11 @@ func finish_transition():
 	
 	print("Transition complete: ", lens_name)
 
-func update_player_physics(player: CharacterBody2D, lens_index: int):
+func update_player_physics(lens_index: int):
 	player.collision_mask = 0
 	player.set_collision_mask_value(lens_index + 1, true)
 
-func move_player_to_viewport(player: CharacterBody2D, lens_name: String):
+func move_player_to_viewport(lens_name: String):
 	var p = player.get_parent()
 	if p != null:
 		p.remove_child.call_deferred(player)
