@@ -132,6 +132,8 @@ func start_transition(_name: String):
 	if player != null:
 		update_player_physics(target_lens)
 		move_player_to_viewport(to_name)
+		
+	MusicManager.play_world_music(to_name)
 	
 	print("Starting transition: ", from_name, " -> ", to_name)
 

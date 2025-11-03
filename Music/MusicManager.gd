@@ -1,0 +1,84 @@
+# MusicManager.gd
+extends Node
+
+# --- Константы и Настройки ---
+const FADE_TIME = 0.01 # Длительность плавного перехода в секундах. Подберите под ритм музыки.
+const DEFAULT_VOLUME_DB = 0.0 # Обычная громкость (0.0 - максимум без искажений)
+const SILENT_VOLUME_DB = -80.0 # Громкость, которая считается "выключенной"
+
+# Словарь для легкого доступа к трекам по названию
+var world_tracks = {
+	"normal": preload("res://Music/NormalV1.ogg"),
+	"echo": preload("res://Music/EchoV1.ogg"),
+	"visceral": preload("res://Music/VisceralV1.ogg"),
+	"truth": preload("res://Music/VisceralV1.ogg"),
+}
+
+# --- Узлы ---
+@onready var player_a: AudioStreamPlayer = $MusicPlayer1
+@onready var player_b: AudioStreamPlayer = $MusicPlayer2
+
+# Плеер, который играет в данный момент
+var current_player: AudioStreamPlayer 
+# Плеер, который готов к следующему треку
+var standby_player: AudioStreamPlayer 
+
+var current_track_name = ""
+
+
+func _ready():
+	# Инициализация: Оба плеера начинают с нулевой громкости и в режиме ожидания
+	player_a.volume_db = SILENT_VOLUME_DB
+	player_b.volume_db = SILENT_VOLUME_DB
+	player_a.bus = "Music" # Убедитесь, что шина установлена
+	player_b.bus = "Music"
+	
+	current_player = player_a
+	standby_player = player_b
+	
+	play_world_music("normal")
+
+
+func play_world_music(track_name: String):
+	if current_track_name == track_name:
+		return
+
+	var new_stream = world_tracks.get(track_name)
+	if new_stream == null:
+		print("Ошибка: Трек для мира '%s' не найден." % track_name)
+		return
+
+	print("Синхронизированное переключение на: %s" % track_name)
+	current_track_name = track_name
+
+	# 1. ЗАПИСЬ ПОЗИЦИИ: Получаем текущую позицию воспроизведения (в секундах)
+	# Если еще ничего не играет, позиция будет 0.0
+	var playback_position = current_player.get_playback_position()
+
+	# --- 2. Настройка нового плеера (Standby) ---
+	standby_player.stream = new_stream
+	standby_player.volume_db = SILENT_VOLUME_DB 
+
+	# 3. СИНХРОНИЗАЦИЯ: Включаем новый трек с полученной позицией!
+	standby_player.play(playback_position)
+
+	# --- 4. Кроссфейд (Плавное затухание/нарастание) ---
+
+	# А) Текущий трек: Плавно затихает
+	var tween_fade_out = create_tween()
+	tween_fade_out.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, FADE_TIME)
+
+	# Б) Новый трек: Плавно набирает громкость
+	var tween_fade_in = create_tween()
+	tween_fade_in.tween_property(standby_player, "volume_db", DEFAULT_VOLUME_DB, FADE_TIME)
+
+	# --- 5. Смена Ролей ---
+	await tween_fade_out.finished
+
+	current_player.stop()
+	current_player.stream = null
+
+	# Меняем местами роли
+	var temp_player = current_player
+	current_player = standby_player
+	standby_player = temp_player
