@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://c8lphal32dpu2"]
 
-[ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Scripts/LensManager.gd" id="1_63qhi"]
+[ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Shader/LensManager.gd" id="1_63qhi"]
 [ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
 [ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/main_level/main_echo.tscn" id="3_d1nr7"]
 [ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/main_level/main_visceral.tscn" id="4_pltfe"]
