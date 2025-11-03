@@ -38,7 +38,7 @@ func _ready():
 
 
 func play_world_music(track_name: String):
-	if current_track_name == track_name or true:
+	if current_track_name == track_name:
 		return
 
 	var new_stream = world_tracks.get(track_name)
