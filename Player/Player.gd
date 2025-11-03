@@ -27,9 +27,6 @@ var jump_buffer_timer = 0.0
 
 @onready var animation_player = $AnimationPlayer
 
-func _ready() -> void:
-	animation_player.play("idle")
-
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_apply_gravity(delta)
@@ -95,19 +92,22 @@ func _update_timers(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 func _update_state() -> void:
+	var state_str = str(eye_state)
+	if eye_state > 2:
+		state_str = "2"
 	if not is_on_floor():
 		if velocity.y < 0:
 			player_state = State.JUMP
-			animation_player.play("jump")
+			animation_player.play("jump" + state_str)
 		else:
 			player_state = State.FALL
-			animation_player.play("fall")
+			animation_player.play("fall" + state_str)
 	elif abs(velocity.x) > 10:
 		player_state = State.WALK
-		animation_player.play("walk")
+		animation_player.play("walk" + state_str)
 	else:
 		player_state = State.IDLE
-		animation_player.play("idle")
+		animation_player.play("idle" + state_str)
 
 func get_state_name() -> String:
 	match player_state:
