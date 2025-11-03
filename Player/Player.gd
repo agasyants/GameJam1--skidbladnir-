@@ -12,6 +12,7 @@ const FAST_FALL_GRAVITY = 3500.0
 # Дополнительные параметры
 const COYOTE_TIME = 0.08
 const JUMP_BUFFER = 0.12
+const STUCK_TIME = 5.0
 const MAX_FALL_SPEED = 1400.0
 
 # Состояния
@@ -24,6 +25,7 @@ var eye_state = 3
 # Таймеры
 var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
+var stuck_timer = 0.0
 
 @onready var animation_player = $AnimationPlayer
 
@@ -46,6 +48,13 @@ func _physics_process(delta: float) -> void:
 	
 	camera.position = camera.position - global_position + prev
 	camera.position = camera.position.lerp(Vector2(0, -140), 1.0 - exp(-10.0 * delta))
+	
+	if test_move(global_transform, Vector2.ZERO):
+		stuck_timer += delta
+		if stuck_timer > STUCK_TIME:
+			die()
+	else:
+		stuck_timer = 0
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():

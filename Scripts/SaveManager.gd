@@ -1,17 +1,15 @@
 extends Node
 
-var save_path = "user://savegame.json"
-
-func save_game(data: Dictionary) -> void:
-	var file = FileAccess.open(save_path, FileAccess.WRITE)
+func save_game(data: Dictionary, save_path = "savegame.json") -> void:
+	var file = FileAccess.open("user://" + save_path, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(data))
 		file = null
 
-func load_game() -> Dictionary:
-	if not FileAccess.file_exists(save_path):
+func load_game(save_path = "savegame.json") -> Dictionary:
+	if not FileAccess.file_exists("user://" + save_path):
 		return {}
-	var file = FileAccess.open(save_path, FileAccess.READ)
+	var file = FileAccess.open("user://" + save_path, FileAccess.READ)
 	if file:
 		var json_str = file.get_as_text()
 		file = null
@@ -21,10 +19,10 @@ func load_game() -> Dictionary:
 			return json.data
 	return {}
 
-func delete_save_file():
-	if FileAccess.file_exists(save_path):
+func delete_save_file(save_path = "savegame.json"):
+	if FileAccess.file_exists("user://" + save_path):
 		var dir = DirAccess.open("user://")
-		dir.remove(save_path)
+		dir.remove("user://" + save_path)
 		print("Файл сохранения удален")
 	else:
 		print("Файл сохранения не существует")

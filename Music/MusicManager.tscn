@@ -5,10 +5,13 @@
 [ext_resource type="AudioStream" uid="uid://bxgsjjxcydrnr" path="res://Music/EchoV1.ogg" id="3_nyl5h"]
 
 [node name="MusicManager" type="Node"]
+process_mode = 3
 script = ExtResource("1_5wdwt")
 
 [node name="MusicPlayer1" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("2_xucj2")
 
 [node name="MusicPlayer2" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("3_nyl5h")

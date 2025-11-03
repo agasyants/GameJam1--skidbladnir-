@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c8lphal32dpu2"]
+[gd_scene load_steps=15 format=3 uid="uid://c8lphal32dpu2"]
 
 [ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Shader/LensManager.gd" id="1_63qhi"]
 [ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
 [ext_resource type="PackedScene" uid="uid://b1kbx13hxs2bs" path="res://UI/pause.tscn" id="6_dsr8i"]
 [ext_resource type="PackedScene" uid="uid://bxahjwaaqcpny" path="res://Player/Player.tscn" id="6_kpj74"]
+[ext_resource type="Shader" uid="uid://dsi1c6aevivx2" path="res://Shader/viniet.gdshader" id="7_d1nr7"]
+[ext_resource type="Script" uid="uid://dhcekjbfkfyp0" path="res://Shader/VinietController.gd" id="8_pltfe"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -19,6 +21,13 @@ viewport_path = NodePath("CanvasLayer/Texture_Visceral/Viewport_Visceral")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mkyii"]
 viewport_path = NodePath("CanvasLayer/Texture_Truth/Viewport_Truth")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pltfe"]
+shader = ExtResource("7_d1nr7")
+shader_parameter/intensity = 0.5
+shader_parameter/size = 0.8
+shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/animation_speed = 1.0
 
 [node name="Root" type="Node2D"]
 
@@ -87,6 +96,12 @@ render_target_update_mode = 0
 
 [node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
 z_index = 1000
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_pltfe")
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("8_pltfe")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
 position = Vector2(-1321, -119)
