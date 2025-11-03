@@ -18,9 +18,7 @@ var world_tracks = {
 @onready var player_a: AudioStreamPlayer = $MusicPlayer1
 @onready var player_b: AudioStreamPlayer = $MusicPlayer2
 
-# Плеер, который играет в данный момент
 var current_player: AudioStreamPlayer 
-# Плеер, который готов к следующему треку
 var standby_player: AudioStreamPlayer 
 
 var current_track_name = ""
@@ -40,7 +38,7 @@ func _ready():
 
 
 func play_world_music(track_name: String):
-	if current_track_name == track_name:
+	if current_track_name == track_name or true:
 		return
 
 	var new_stream = world_tracks.get(track_name)

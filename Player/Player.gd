@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	
 	camera.position = camera.position - global_position + prev
 	
-	camera.position = camera.position.lerp(Vector2(0, -120), 1.0 - exp(-10.0 * delta))
+	camera.position = camera.position.lerp(Vector2(0, -140), 1.0 - exp(-10.0 * delta))
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
