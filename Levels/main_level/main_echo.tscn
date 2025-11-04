@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dnxenluq232bw" path="res://Assets/back-03.png" id="2_cfjkb"]
 [ext_resource type="Texture2D" uid="uid://3tl1pcncecke" path="res://Assets/back-04.png" id="2_qohfp"]
 [ext_resource type="PackedScene" uid="uid://dqh7c261ruq0o" path="res://Scripts/DeathPlate.tscn" id="3_qpoie"]
-[ext_resource type="PackedScene" path="res://Scripts/CameraPlate.tscn" id="4_2ihqu"]
+[ext_resource type="PackedScene" uid="uid://121sq8qgn4w8" path="res://Scripts/CameraPlate.tscn" id="4_2ihqu"]
 [ext_resource type="PackedScene" uid="uid://cc5ebuy27mp74" path="res://Story/Altar.tscn" id="5_487aq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6cqa7"]

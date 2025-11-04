@@ -25,7 +25,7 @@ func _on_body_entered(body):
 				MusicManager.world_tracks["normal"] = preload("res://Music/End.ogg")
 				MusicManager.world_tracks["echo"] = preload("res://Music/End.ogg")
 				MusicManager.world_tracks["visceral"] = preload("res://Music/End.ogg")
-				MusicManager.fade_out_and_restart(2.0)
+				MusicManager.fade_out_and_restart(3.0)
 				$Alt3.play()
 			body.eye_state = to
 			GameManager.set_checkpoint("altar", body.global_position, body.eye_state, lens.current_lens)

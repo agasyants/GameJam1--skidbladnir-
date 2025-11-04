@@ -111,6 +111,8 @@ func switch_lens_instant(_name: String):
 	for key in texture_rects:
 		texture_rects[key].visible = (key == _name)
 	
+	MusicManager.play_world_music(_name)
+	
 	print("Instant switch to: ", _name)
 
 func start_transition(_name: String):
