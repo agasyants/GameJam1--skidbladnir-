@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=4 uid="uid://ypx86nl676vu"]
+[gd_scene load_steps=11 format=4 uid="uid://ypx86nl676vu"]
 
 [ext_resource type="Texture2D" uid="uid://bj4lwmw5aog6l" path="res://Levels/atlas-02.png" id="1_fmssl"]
+[ext_resource type="Texture2D" uid="uid://bwao3io5kniqi" path="res://Assets/alt-02.png" id="1_uw023"]
 [ext_resource type="PackedScene" uid="uid://mf88s1oxlqr1" path="res://Scripts/Checkpoint.tscn" id="2_862ku"]
 [ext_resource type="Texture2D" uid="uid://dnxenluq232bw" path="res://Assets/back-03.png" id="2_cfjkb"]
 [ext_resource type="Texture2D" uid="uid://3tl1pcncecke" path="res://Assets/back-04.png" id="2_qohfp"]
@@ -66,6 +67,10 @@ offset_top = -3612.0
 offset_right = 6439.0
 offset_bottom = 3403.0
 color = Color(0.235294, 0.235294, 0.235294, 1)
+
+[node name="Alt-02" type="Sprite2D" parent="."]
+position = Vector2(14, -823)
+texture = ExtResource("1_uw023")
 
 [node name="Back-03" type="Sprite2D" parent="."]
 position = Vector2(5099, 1525)
