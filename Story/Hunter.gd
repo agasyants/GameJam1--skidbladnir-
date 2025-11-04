@@ -75,6 +75,7 @@ func change_state(new_state: String):
 			charge_progress = 0.0
 			$Kaka.show()
 			$"Kaka-chardge".hide()
+			$Attack.play()
 	
 	if sprite and aim_direction.length() > 0:
 		sprite.flip_h = aim_direction.x < 0

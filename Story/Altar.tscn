@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cc5ebuy27mp74"]
+[gd_scene load_steps=12 format=3 uid="uid://cc5ebuy27mp74"]
 
 [ext_resource type="Script" uid="uid://dpciwcn8h8r7e" path="res://Story/Altar.gd" id="1_gir4o"]
+[ext_resource type="AudioStream" uid="uid://ca7206uuvab4g" path="res://Levels/Alt1.ogg" id="2_8lbbk"]
 [ext_resource type="Texture2D" uid="uid://d4f2478ritd47" path="res://Assets/eye.png" id="2_gir4o"]
+[ext_resource type="AudioStream" uid="uid://dvq7o1nveo7mp" path="res://Levels/Alt2.ogg" id="3_sxn5p"]
+[ext_resource type="AudioStream" uid="uid://cpw5evxlpeqhx" path="res://Levels/Alt3.ogg" id="4_8a4ef"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pu2xe"]
 size = Vector2(100, 100)
@@ -44,6 +47,18 @@ animations = [{
 
 [node name="DeathPlate" type="Area2D"]
 script = ExtResource("1_gir4o")
+
+[node name="Alt1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8lbbk")
+bus = &"SFX"
+
+[node name="Alt2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_sxn5p")
+bus = &"SFX"
+
+[node name="Alt3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_8a4ef")
+bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)
