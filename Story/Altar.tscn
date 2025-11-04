@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cc5ebuy27mp74"]
 
-[ext_resource type="Script" uid="uid://dh74jh5rhsldh" path="res://Scripts/CameraPlate.gd" id="1_1lxm3"]
+[ext_resource type="Script" uid="uid://dpciwcn8h8r7e" path="res://Story/Altar.gd" id="1_gir4o"]
 [ext_resource type="Texture2D" uid="uid://d4f2478ritd47" path="res://Assets/eye.png" id="2_gir4o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pu2xe"]
@@ -23,7 +23,7 @@ animations = [{
 }]
 
 [node name="DeathPlate" type="Area2D"]
-script = ExtResource("1_1lxm3")
+script = ExtResource("1_gir4o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)

@@ -18,7 +18,7 @@ const MAX_FALL_SPEED = 1400.0
 # Состояния
 enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
-var eye_state = 3
+var eye_state = 0
 
 var camera_offset: Vector2 = Vector2(0, -140)
 
@@ -41,7 +41,7 @@ var stuck_timer = 0.0
 func _ready() -> void:
 	var loaded = SaveManager.load_game()
 	if loaded:
-		eye_state = loaded["eyes"]
+		eye_state = int(loaded["eyes"])
 		global_position = Vector2(loaded["position_x"], loaded["position_y"])
 
 func _physics_process(delta: float) -> void:
@@ -151,4 +151,4 @@ func die():
 	else:
 		# Восстанавливаем состояние
 		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
-		eye_state = checkpoint["eyes"]
+		eye_state = int(checkpoint["eyes"])
