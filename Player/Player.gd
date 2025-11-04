@@ -43,6 +43,9 @@ var active := true
 @onready var viniet = get_tree().get_first_node_in_group("V")
 @onready var lens = get_tree().get_first_node_in_group("manager")
 
+func play_change_sound():
+	$Switch.play()
+
 func _ready() -> void:
 	var loaded = SaveManager.load_game()
 	if loaded:

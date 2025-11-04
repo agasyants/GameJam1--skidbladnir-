@@ -114,6 +114,7 @@ func switch_lens_instant(_name: String):
 	print("Instant switch to: ", _name)
 
 func start_transition(_name: String):
+	player.play_change_sound()
 	is_transitioning = true
 	transition_progress = 0.0
 	
