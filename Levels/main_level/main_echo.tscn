@@ -73,8 +73,10 @@ scale = Vector2(5.84, 2.48)
 [node name="DeathPlate3" parent="." instance=ExtResource("4_2ihqu")]
 position = Vector2(5113, 1105)
 scale = Vector2(9.7943, 9.14418)
+zoom = Vector2(0.9, 0.9)
 
 [node name="DeathPlate4" parent="." instance=ExtResource("4_2ihqu")]
 position = Vector2(3660, 1332)
 scale = Vector2(3.70785, 8.42347)
 offset = Vector2(0, -40)
+zoom = Vector2(0.8, 0.8)

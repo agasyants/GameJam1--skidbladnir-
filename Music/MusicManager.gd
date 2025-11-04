@@ -8,10 +8,10 @@ const SILENT_VOLUME_DB = -80.0 # Громкость, которая считае
 
 # Словарь для легкого доступа к трекам по названию
 var world_tracks = {
-	"normal": preload("res://Music/NormalV1.ogg"),
-	"echo": preload("res://Music/EchoV1.ogg"),
-	"visceral": preload("res://Music/VisceralV1.ogg"),
-	"truth": preload("res://Music/VisceralV1.ogg"),
+	"normal": preload("res://Music/NormalV2.ogg"),
+	"echo": preload("res://Music/EchoV2.ogg"),
+	"visceral": preload("res://Music/VisceralV2.ogg"),
+	"truth": preload("res://Music/VisceralV2.ogg"),
 }
 
 # --- Узлы ---

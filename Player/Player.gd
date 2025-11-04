@@ -25,6 +25,9 @@ var camera_offset: Vector2 = Vector2(0, -140)
 func set_camera_offset(offset):
 	camera_offset = offset
 
+func set_camera_zoom(zoom):
+	camera.zoom = zoom
+
 @onready var camera: Camera2D = get_viewport().get_camera_2d()
 
 # Таймеры
