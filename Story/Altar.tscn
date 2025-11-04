@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cc5ebuy27mp74"]
+[gd_scene load_steps=9 format=3 uid="uid://cc5ebuy27mp74"]
 
 [ext_resource type="Script" uid="uid://dpciwcn8h8r7e" path="res://Story/Altar.gd" id="1_gir4o"]
 [ext_resource type="Texture2D" uid="uid://d4f2478ritd47" path="res://Assets/eye.png" id="2_gir4o"]
@@ -6,19 +6,39 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pu2xe"]
 size = Vector2(100, 100)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gir4o"]
+atlas = ExtResource("2_gir4o")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_os50w"]
+atlas = ExtResource("2_gir4o")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_koppb"]
+atlas = ExtResource("2_gir4o")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lbbk"]
+atlas = ExtResource("2_gir4o")
+region = Rect2(300, 0, 100, 100)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_os50w"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_gir4o")
+"texture": SubResource("AtlasTexture_gir4o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_os50w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_koppb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8lbbk")
 }],
 "loop": true,
-"name": &"new_animation",
+"name": &"default",
 "speed": 5.0
 }]
 
@@ -31,4 +51,5 @@ shape = SubResource("RectangleShape2D_pu2xe")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_os50w")
-animation = &"new_animation"
+autoplay = "default"
+frame_progress = 0.15668
