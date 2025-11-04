@@ -54,19 +54,19 @@ value = 1.0
 
 [node name="resume_btn" type="Button" parent="."]
 layout_mode = 1
-offset_left = 720.0
-offset_top = 52.0
-offset_right = 864.0
-offset_bottom = 83.0
+offset_left = 104.0
+offset_top = 310.0
+offset_right = 248.0
+offset_bottom = 341.0
 scale = Vector2(2, 2)
 text = "Resume"
 
 [node name="restart_btn" type="Button" parent="."]
 layout_mode = 1
-offset_left = 1040.0
-offset_top = 52.0
-offset_right = 1184.0
-offset_bottom = 83.0
+offset_left = 424.0
+offset_top = 310.0
+offset_right = 568.0
+offset_bottom = 341.0
 scale = Vector2(2, 2)
 text = "New game"
 
