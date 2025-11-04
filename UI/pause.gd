@@ -35,6 +35,7 @@ func _on_resume_button_pressed():
 
 func _on_restart_button_pressed():
 	SaveManager.delete_save_file()
+	GameManager.current_checkpoint_data = {}
 	resume()
 	get_tree().reload_current_scene()
 
