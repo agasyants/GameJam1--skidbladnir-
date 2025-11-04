@@ -132,6 +132,7 @@ func _update_timers(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 func _update_state() -> void:
+	
 	var state_str = str(eye_state)
 	if eye_state > 2:
 		state_str = "2"
@@ -143,9 +144,13 @@ func _update_state() -> void:
 			player_state = State.FALL
 			animation_player.play("fall" + state_str)
 	elif abs(velocity.x) > 10:
+		if player_state == State.FALL:
+			$Landing.play()
 		player_state = State.WALK
 		animation_player.play("walk" + state_str)
 	else:
+		if player_state == State.FALL:
+			$Landing.play()
 		player_state = State.IDLE
 		animation_player.play("idle" + state_str)
 
