@@ -84,7 +84,7 @@ func _input(event: InputEvent):
 		#if event.is_action_pressed("switch_truth") and player.eye_state > 2:
 			#switch_lens("truth")
 		if event.is_action_pressed("restart"):
-			player.die()
+			player.death()
 		if event.is_action_pressed("pause"):
 			get_tree().paused = true
 
@@ -98,7 +98,9 @@ func switch_lens(_name: String):
 	start_transition(_name)
 
 func switch_lens_instant(_name: String):
-	"""Мгновенное переключение без анимации (для старта игры)"""
+	#if current_lens == LENSES[_name]:
+		#return
+	
 	current_lens = LENSES[_name]
 	
 	if player != null:

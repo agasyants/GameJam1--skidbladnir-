@@ -2,6 +2,7 @@ extends Area2D
 
 # Уникальный ID чекпоинта
 @export var checkpoint_id: String = "default"
+@onready var lens: LensManager = get_tree().get_first_node_in_group("manager")
 
 func _ready():
 	# Правильное подключение сигнала в Godot 4
@@ -16,7 +17,8 @@ func activate_checkpoint(player:Player):
 	GameManager.set_checkpoint(
 		checkpoint_id,
 		global_position,
-		player.eye_state
+		player.eye_state,
+		lens.current_lens
 	)
 	
 	# Визуальный эффект (например, изменить анимацию)

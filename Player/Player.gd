@@ -18,7 +18,7 @@ const MAX_FALL_SPEED = 1400.0
 # Состояния
 enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
-var eye_state = 2
+var eye_state = 0
 
 var camera_offset: Vector2 = Vector2(0, -140)
 
@@ -34,9 +34,13 @@ func set_camera_zoom(zoom):
 var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
 var stuck_timer = 0.0
+var active_timer = 0.0
+
+var active := true
 
 @onready var animation_player = $AnimationPlayer
 @onready var viniet = get_tree().get_first_node_in_group("V")
+@onready var lens = get_tree().get_first_node_in_group("manager")
 
 func _ready() -> void:
 	var loaded = SaveManager.load_game()
@@ -45,29 +49,34 @@ func _ready() -> void:
 		global_position = Vector2(loaded["position_x"], loaded["position_y"])
 
 func _physics_process(delta: float) -> void:
-	_update_timers(delta)
-	_apply_gravity(delta)
-	_handle_horizontal_movement(delta)
-	_handle_jump()
-	_update_state()
-	
-	var prev = global_position
-	
-	move_and_slide()
-	
-	camera.position = camera.position - global_position + prev
-	camera.position = camera.position.lerp(camera_offset, 1.0 - exp(-10.0 * delta))
-	
-	if test_move(global_transform, Vector2.ZERO):
-		stuck_timer += delta
-		viniet.set_intensity(stuck_timer/STUCK_TIME)
-		viniet.set_size1(1.1-stuck_timer/STUCK_TIME*0.7)
-		if stuck_timer > STUCK_TIME:
-			die()
+	if active:
+		_update_timers(delta)
+		_apply_gravity(delta)
+		_handle_horizontal_movement(delta)
+		_handle_jump()
+		_update_state()
+		
+		var prev = global_position
+		
+		move_and_slide()
+		
+		camera.position = camera.position - global_position + prev
+		camera.position = camera.position.lerp(camera_offset, 1.0 - exp(-10.0 * delta))
+		
+		if test_move(global_transform, Vector2.ZERO):
+			stuck_timer += delta
+			viniet.set_intensity(stuck_timer/STUCK_TIME)
+			viniet.set_size1(1.1-stuck_timer/STUCK_TIME*0.7)
+			if stuck_timer > STUCK_TIME:
+				die()
+		else:
+			viniet.set_intensity(0.0)
+			viniet.set_size1(1.2)
+			stuck_timer = 0.0
 	else:
-		viniet.set_intensity(0.0)
-		viniet.set_size1(1.2)
-		stuck_timer = 0.0
+		active_timer -= delta
+		if active_timer < 0:
+			death()
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
@@ -145,6 +154,11 @@ func get_state_name() -> String:
 		_: return "idle"
 
 func die():
+	active = false
+	active_timer = 0.6
+
+func death():
+	active = true
 	var checkpoint = GameManager.get_checkpoint_data()
 	if checkpoint.is_empty():
 		get_tree().reload_current_scene()
@@ -152,3 +166,5 @@ func die():
 		# Восстанавливаем состояние
 		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
 		eye_state = int(checkpoint["eyes"])
+		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
+	

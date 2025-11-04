@@ -30,7 +30,7 @@ shader_parameter/vignette_color = Color(0, 0, 0, 1)
 
 [node name="Root" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." groups=["manager"]]
 script = ExtResource("1_63qhi")
 
 [node name="Texture_Normal" type="TextureRect" parent="CanvasLayer"]
