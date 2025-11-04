@@ -37,6 +37,12 @@ func _on_restart_button_pressed():
 	SaveManager.delete_save_file()
 	GameManager.current_checkpoint_data = {}
 	resume()
+	MusicManager.world_tracks = {
+		"normal": preload("res://Music/NormalV3.ogg"),
+		"echo": preload("res://Music/EchoV2.ogg"),
+		"visceral": preload("res://Music/VisceralV2.ogg"),
+		"truth": preload("res://Music/VisceralV2.ogg"),
+	}
 	get_tree().reload_current_scene()
 
 func resume():

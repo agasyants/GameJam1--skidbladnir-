@@ -111,7 +111,7 @@ position = Vector2(-107, 1396)
 [node name="CameraPlate" parent="." instance=ExtResource("4_2ihqu")]
 position = Vector2(-1051, -1476)
 scale = Vector2(-1.31461, 1.6174)
-offset = Vector2(0, -240)
+offset = Vector2(0, 0)
 
 [node name="CameraPlate2" parent="." instance=ExtResource("4_2ihqu")]
 position = Vector2(-1911, -1247)

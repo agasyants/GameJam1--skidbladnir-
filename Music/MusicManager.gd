@@ -79,3 +79,34 @@ func play_world_music(track_name: String):
 	var temp_player = current_player
 	current_player = standby_player
 	standby_player = temp_player
+
+# Плавно гасит музыку и начинает трек сначала
+func fade_out_and_restart(fade_duration: float = FADE_TIME):
+	print("Перезапуск текущего трека: %s" % current_track_name)
+	
+	# 1. Плавное затухание текущего плеера
+	var tween_fade = create_tween()
+	tween_fade.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
+	
+	# 2. Ждем завершения затухания
+	await tween_fade.finished
+	
+	# 3. Останавливаем и перезапускаем с начала
+	current_player.stop()
+	current_player.stream = world_tracks.get("normal")
+	current_player.play(0.0)
+	
+	# 4. Плавное нарастание громкости
+	var tween_fade_in = create_tween()
+	tween_fade_in.tween_property(current_player, "volume_db", DEFAULT_VOLUME_DB, 0.01)
+
+# Просто плавно гасит музыку (без перезапуска)
+func fade_out(fade_duration: float = FADE_TIME):
+	print("Затухание музыки")
+	
+	var tween_fade = create_tween()
+	tween_fade.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
+	
+	await tween_fade.finished
+	current_player.stop()
+	current_track_name = ""
