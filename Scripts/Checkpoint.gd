@@ -18,7 +18,7 @@ func activate_checkpoint(player:Player):
 		checkpoint_id,
 		global_position,
 		player.eye_state,
-		lens.current_lens
+		lens.target_lens
 	)
 	
 	# Визуальный эффект (например, изменить анимацию)

@@ -7,7 +7,6 @@ size = Vector2(100, 500)
 
 [node name="Checkpoint" type="Area2D"]
 script = ExtResource("1_awb03")
-checkpoint_id = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_awb03")

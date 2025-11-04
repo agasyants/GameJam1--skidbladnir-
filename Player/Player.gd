@@ -35,6 +35,7 @@ var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
 var stuck_timer = 0.0
 var active_timer = 0.0
+var inv_timer := 0.0
 
 var active := true
 
@@ -50,6 +51,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if active:
+		if inv_timer > 0.0:
+			inv_timer -= delta
+		
 		_update_timers(delta)
 		_apply_gravity(delta)
 		_handle_horizontal_movement(delta)
@@ -154,12 +158,13 @@ func get_state_name() -> String:
 		_: return "idle"
 
 func die():
-	active = false
-	active_timer = 0.5
-	var state_str = str(eye_state)
-	if eye_state > 2:
-		state_str = "2"
-	animation_player.play("dead" + state_str)
+	if active and inv_timer <= 0:
+		active = false
+		active_timer = 0.9
+		var state_str = str(eye_state)
+		if eye_state > 2:
+			state_str = "2"
+		animation_player.play("dead" + state_str)
 
 func death():
 	active = true
@@ -168,8 +173,9 @@ func death():
 		get_tree().reload_current_scene()
 	else:
 		# Восстанавливаем состояние
+		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
 		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
 		eye_state = int(checkpoint["eyes"])
-		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
+		inv_timer = 0.2
 
 	

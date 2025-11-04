@@ -85,4 +85,6 @@ func _on_hitbox_area_entered(area):
 
 func kill_player(player_node):
 	global_position = start
-	player_node.call_deferred("die")
+	state = "AIMING"
+	active = false
+	player_node.die()
