@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://prju72f4cqpl"]
+[gd_scene load_steps=10 format=4 uid="uid://prju72f4cqpl"]
 
+[ext_resource type="Texture2D" uid="uid://dcyxpymgn8238" path="res://Assets/alt-01.png" id="1_f0vsc"]
 [ext_resource type="Texture2D" uid="uid://dx0lalpr2omc0" path="res://Levels/atlas-01.png" id="1_tnpg0"]
 [ext_resource type="Texture2D" uid="uid://dcuceprojc3uw" path="res://Assets/back-02.png" id="2_6x4bf"]
 [ext_resource type="PackedScene" uid="uid://mf88s1oxlqr1" path="res://Scripts/Checkpoint.tscn" id="2_ajat7"]
-[ext_resource type="PackedScene" uid="uid://121sq8qgn4w8" path="res://Scripts/CameraPlate.tscn" id="3_cyurm"]
+[ext_resource type="PackedScene" path="res://Scripts/CameraPlate.tscn" id="3_cyurm"]
 [ext_resource type="PackedScene" uid="uid://cc5ebuy27mp74" path="res://Story/Altar.tscn" id="4_hboql"]
 [ext_resource type="Texture2D" uid="uid://c83cqiaaoelkb" path="res://Assets/back-01.png" id="5_mm8ce"]
 
@@ -64,6 +65,10 @@ offset_top = -3936.0
 offset_right = 7214.0
 offset_bottom = 3904.0
 color = Color(0.101961, 0.0431373, 0.0235294, 1)
+
+[node name="Alt-01" type="Sprite2D" parent="."]
+position = Vector2(8, -473)
+texture = ExtResource("1_f0vsc")
 
 [node name="Back-01" type="Sprite2D" parent="."]
 position = Vector2(-1858, -313)
