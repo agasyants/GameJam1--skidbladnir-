@@ -155,7 +155,11 @@ func get_state_name() -> String:
 
 func die():
 	active = false
-	active_timer = 0.6
+	active_timer = 0.5
+	var state_str = str(eye_state)
+	if eye_state > 2:
+		state_str = "2"
+	animation_player.play("dead" + state_str)
 
 func death():
 	active = true
@@ -167,4 +171,5 @@ func death():
 		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
 		eye_state = int(checkpoint["eyes"])
 		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
+
 	

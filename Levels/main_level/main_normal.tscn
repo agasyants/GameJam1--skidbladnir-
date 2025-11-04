@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dx0lalpr2omc0" path="res://Levels/atlas-01.png" id="1_tnpg0"]
 [ext_resource type="PackedScene" uid="uid://mf88s1oxlqr1" path="res://Scripts/Checkpoint.tscn" id="2_ajat7"]
-[ext_resource type="PackedScene" uid="uid://121sq8qgn4w8" path="res://Scripts/CameraPlate.tscn" id="3_cyurm"]
+[ext_resource type="PackedScene" path="res://Scripts/CameraPlate.tscn" id="3_cyurm"]
 [ext_resource type="PackedScene" uid="uid://cc5ebuy27mp74" path="res://Story/Altar.tscn" id="4_hboql"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vaj5t"]
@@ -62,12 +62,10 @@ tile_set = SubResource("TileSet_6xhby")
 
 [node name="Checkpoint" parent="." instance=ExtResource("2_ajat7")]
 position = Vector2(1924, -241)
-checkpoint_id = null
 
 [node name="Checkpoint2" parent="." instance=ExtResource("2_ajat7")]
 position = Vector2(3753, 1614)
 scale = Vector2(1, 0.56)
-checkpoint_id = null
 
 [node name="DeathPlate" parent="." instance=ExtResource("3_cyurm")]
 position = Vector2(-2011, -264)
@@ -101,13 +99,10 @@ offset = Vector2(0, -100)
 
 [node name="Checkpoint3" parent="." instance=ExtResource("2_ajat7")]
 position = Vector2(1394, 1306)
-checkpoint_id = null
 
 [node name="Checkpoint4" parent="." instance=ExtResource("2_ajat7")]
 position = Vector2(-108, 1428)
 scale = Vector2(1, 0.6)
-checkpoint_id = null
 
 [node name="Checkpoint5" parent="." instance=ExtResource("2_ajat7")]
 position = Vector2(2626, 1526)
-checkpoint_id = null
