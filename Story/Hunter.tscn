@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://co14fker7ixm8"]
+[gd_scene load_steps=5 format=3 uid="uid://co14fker7ixm8"]
 
 [ext_resource type="Script" uid="uid://db07cvdcpmj6q" path="res://Story/Hunter.gd" id="1_6gogh"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_6gogh"]
+[ext_resource type="Texture2D" uid="uid://ctsnsshjvj2ku" path="res://Assets/kaka.png" id="2_7bo3q"]
+[ext_resource type="Texture2D" uid="uid://4bau0hc0w8o5" path="res://Assets/kaka-charge.png" id="3_rs6qn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vxd0"]
 radius = 60.0
@@ -10,10 +10,16 @@ radius = 60.0
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_6gogh")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.999999, 1.5)
-scale = Vector2(126, 125)
-texture = SubResource("PlaceholderTexture2D_6gogh")
+[node name="Kaka" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(1.42, 1.42)
+texture = ExtResource("2_7bo3q")
+
+[node name="Kaka-chardge" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-1.99998, 3.00002)
+scale = Vector2(1.36, 1.36)
+texture = ExtResource("3_rs6qn")
 
 [node name="Hitbox" type="Area2D" parent="."]
 
