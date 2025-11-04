@@ -12,6 +12,12 @@ func _ready():
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
 		hide()
+		if from == 0:
+			MusicManager.world_tracks["normal"] = preload("res://Music/NormalV3.ogg")
+		if from == 2:
+			MusicManager.world_tracks["normal"] = preload("res://Music/End.ogg")
+			MusicManager.world_tracks["echo"] = preload("res://Music/End.ogg")
+			MusicManager.world_tracks["visceral"] = preload("res://Music/End.ogg")
 		var back = get_parent().get_node(backname)
 		if back:
 			back.show()
