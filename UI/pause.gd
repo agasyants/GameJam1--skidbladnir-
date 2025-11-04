@@ -13,7 +13,7 @@ func _ready():
 	var volume_data = SaveManager.load_game(volume_bus_name + '.json')
 	var sfx_data = SaveManager.load_game(sfx_bus_name + '.json')
 	$volume_slider.value = 0.8
-	$sfx_slider.value = 0.8
+	$sfx_slider.value = 0.6
 	
 	if volume_data:
 		$volume_slider.value = volume_data["volume"]
