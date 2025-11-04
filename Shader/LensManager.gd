@@ -21,16 +21,18 @@ var target_lens := 0
 var is_transitioning := false
 var transitioning_to := "normal"
 var transition_progress := 0.0
-var transition_speed := 1.4  # Скорость перехода
+var transition_speed := 1.4
 
 var texture_rects = {}
 var transition_rect: ColorRect
 var transition_material: ShaderMaterial
 
 var player: Player
+var enemy: Enemy
 
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
+	enemy = get_tree().get_first_node_in_group("Enemy")
 	# Создаём ColorRect для эффекта перехода
 	transition_rect = ColorRect.new()
 	transition_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -72,10 +74,13 @@ func _input(event: InputEvent):
 	if player != null:
 		if event.is_action_pressed("switch_normal"):
 			switch_lens("normal")
+			enemy.active = false
 		if event.is_action_pressed("switch_echo") and player.eye_state > 0:
 			switch_lens("echo")
+			enemy.active = false
 		if event.is_action_pressed("switch_visceral") and player.eye_state > 1:
 			switch_lens("visceral")
+			enemy.active = true
 		#if event.is_action_pressed("switch_truth") and player.eye_state > 2:
 			#switch_lens("truth")
 		if event.is_action_pressed("restart"):

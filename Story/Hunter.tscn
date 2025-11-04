@@ -1,14 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://co14fker7ixm8"]
+[gd_scene load_steps=4 format=3 uid="uid://co14fker7ixm8"]
 
 [ext_resource type="Script" uid="uid://db07cvdcpmj6q" path="res://Story/Hunter.gd" id="1_6gogh"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5vxd0"]
-radius = 50.0
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_6gogh"]
 
-[node name="Hunter1" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vxd0"]
+radius = 60.0
+
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_6gogh")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.999999, 1.5)
+scale = Vector2(126, 125)
+texture = SubResource("PlaceholderTexture2D_6gogh")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_5vxd0")
