@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1kbx13hxs2bs"]
+[gd_scene load_steps=8 format=3 uid="uid://b1kbx13hxs2bs"]
 
 [ext_resource type="Script" uid="uid://bk2r6bdrvs4d8" path="res://UI/pause.gd" id="1_6wphx"]
 [ext_resource type="Texture2D" uid="uid://b3jahp4j4jd8x" path="res://Assets/logo.png" id="2_jixca"]
+[ext_resource type="Theme" uid="uid://de227i5mabcce" path="res://Scripts/pause.tres" id="3_jl6cd"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_85lix"]
+thickness = 20
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ocodi"]
+thickness = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_jixca"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_jl6cd"]
+font_size = 32
 
 [node name="Pause" type="Control"]
 layout_mode = 3
@@ -31,12 +44,14 @@ scale = Vector2(1.27419, 1.27419)
 texture = ExtResource("2_jixca")
 
 [node name="volume_slider" type="HSlider" parent="."]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 1
 offset_left = 489.0
 offset_top = 447.0
-offset_right = 691.0
-offset_bottom = 463.0
-scale = Vector2(2, 2)
+offset_right = 889.0
+offset_bottom = 507.0
+theme = ExtResource("3_jl6cd")
+theme_override_styles/slider = SubResource("StyleBoxLine_85lix")
 max_value = 1.0
 step = 0.01
 value = 1.0
@@ -45,48 +60,49 @@ value = 1.0
 layout_mode = 1
 offset_left = 489.0
 offset_top = 538.0
-offset_right = 691.0
-offset_bottom = 554.0
-scale = Vector2(2, 2)
+offset_right = 884.0
+offset_bottom = 578.0
+theme = ExtResource("3_jl6cd")
+theme_override_styles/slider = SubResource("StyleBoxLine_ocodi")
 max_value = 1.0
 step = 0.01
 value = 1.0
 
 [node name="resume_btn" type="Button" parent="."]
 layout_mode = 1
-offset_left = 104.0
-offset_top = 310.0
-offset_right = 248.0
-offset_bottom = 341.0
-scale = Vector2(2, 2)
+offset_left = 115.0
+offset_top = 307.0
+offset_right = 307.0
+offset_bottom = 378.0
+theme_override_font_sizes/font_size = 40
 text = "Resume"
 
 [node name="restart_btn" type="Button" parent="."]
 layout_mode = 1
 offset_left = 424.0
 offset_top = 310.0
-offset_right = 568.0
-offset_bottom = 341.0
-scale = Vector2(2, 2)
+offset_right = 659.0
+offset_bottom = 379.0
+theme_override_font_sizes/font_size = 40
 text = "New game"
 
 [node name="volume_label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 106.0
+offset_left = 118.0
 offset_top = 429.0
-offset_right = 213.0
-offset_bottom = 452.0
-scale = Vector2(2, 2)
+offset_right = 331.0
+offset_bottom = 474.0
 text = "Music volume"
+label_settings = SubResource("LabelSettings_jixca")
 
 [node name="sfx_label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 131.0
-offset_top = 518.0
-offset_right = 220.0
-offset_bottom = 541.0
-scale = Vector2(2, 2)
+offset_left = 127.0
+offset_top = 524.0
+offset_right = 305.0
+offset_bottom = 569.0
 text = "SFX volume"
+label_settings = SubResource("LabelSettings_jl6cd")
 
 [connection signal="value_changed" from="volume_slider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="value_changed" from="sfx_slider" to="." method="_on_sfx_slider_value_changed"]

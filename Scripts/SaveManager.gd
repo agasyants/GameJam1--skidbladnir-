@@ -1,12 +1,12 @@
 extends Node
 
-func save_game(data: Dictionary, save_path = "savegame.json") -> void:
+func save(data: Dictionary, save_path = "savegame.json") -> void:
 	var file = FileAccess.open("user://" + save_path, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(data))
 		file = null
 
-func load_game(save_path = "savegame.json") -> Dictionary:
+func load_file(save_path = "savegame.json") -> Dictionary:
 	if not FileAccess.file_exists("user://" + save_path):
 		return {}
 	var file = FileAccess.open("user://" + save_path, FileAccess.READ)

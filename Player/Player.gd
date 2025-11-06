@@ -5,7 +5,7 @@ class_name Player
 const SPEED = 600.0
 const JUMP_VELOCITY = -1500.0
 const ACCELERATION = 4000.0
-const FRICTION = 4000.0
+const FRICTION = 5000.0
 const GRAVITY = 3400.0
 const FAST_FALL_GRAVITY = 3500.0
 
@@ -19,16 +19,6 @@ const MAX_FALL_SPEED = 1400.0
 enum State { IDLE, WALK, JUMP, FALL }
 var player_state: State = State.IDLE
 var eye_state = 0
-
-var camera_offset: Vector2 = Vector2(0, -140)
-
-func set_camera_offset(offset):
-	camera_offset = offset
-
-func set_camera_zoom(zoom):
-	camera.zoom = zoom
-
-@onready var camera: Camera2D = get_viewport().get_camera_2d()
 
 # Таймеры
 var coyote_timer = 0.0
@@ -47,7 +37,7 @@ func play_change_sound():
 	$Switch.play()
 
 func _ready() -> void:
-	var loaded = SaveManager.load_game()
+	var loaded = SaveManager.load_file()
 	if loaded:
 		eye_state = int(loaded["eyes"])
 		global_position = Vector2(loaded["position_x"], loaded["position_y"])
@@ -63,12 +53,7 @@ func _physics_process(delta: float) -> void:
 		_handle_jump()
 		_update_state()
 		
-		var prev = global_position
-		
 		move_and_slide()
-		
-		camera.position = camera.position - global_position + prev
-		camera.position = camera.position.lerp(camera_offset, 1.0 - exp(-10.0 * delta))
 		
 		if test_move(global_transform, Vector2.ZERO):
 			stuck_timer += delta
@@ -168,7 +153,7 @@ func get_state_name() -> String:
 func die():
 	if active and inv_timer <= 0:
 		active = false
-		active_timer = 0.9
+		active_timer = 0.6
 		var state_str = str(eye_state)
 		if eye_state > 2:
 			state_str = "2"
@@ -180,10 +165,8 @@ func death():
 	if checkpoint.is_empty():
 		get_tree().reload_current_scene()
 	else:
-		# Восстанавливаем состояние
 		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
 		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
 		eye_state = int(checkpoint["eyes"])
 		inv_timer = 0.2
-
-	
+	lens.set_cameras_positions(global_position)

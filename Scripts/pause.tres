@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://de227i5mabcce"]
+
+[ext_resource type="Texture2D" uid="uid://bxqp31we4lg42" path="res://Scripts/grubber.tres" id="1_aobjv"]
+
+[resource]
+HSlider/constants/center_grabber = 1
+HSlider/icons/grabber = ExtResource("1_aobjv")
+HSlider/icons/grabber_disabled = ExtResource("1_aobjv")
+HSlider/icons/grabber_highlight = ExtResource("1_aobjv")

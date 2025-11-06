@@ -27,6 +27,9 @@ shader = ExtResource("7_d1nr7")
 shader_parameter/intensity = 0.5
 shader_parameter/size = 0.8
 shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/distortion_intensity = 0.1
+shader_parameter/pulse_speed = 3.0
 
 [node name="Root" type="Node2D"]
 

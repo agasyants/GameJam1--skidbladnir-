@@ -18,6 +18,8 @@ var charge_progress: float = 0.0  # 0..1 — прогресс рывка
 var start: Vector2
 var active := false
 
+var return_timer := 0.0
+
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	sprite = $Sprite2D if has_node("Sprite2D") else null
@@ -37,6 +39,10 @@ func _physics_process(delta):
 				handle_aiming(delta)
 			"CHARGING":
 				handle_charging(delta)
+	if return_timer > 0.0:
+		return_timer -= delta
+		if return_timer <= 0.0:
+			global_position = start
 
 func handle_aiming(_delta):
 	if player:
@@ -89,7 +95,7 @@ func _on_hitbox_area_entered(area):
 		kill_player(area)
 
 func kill_player(player_node):
-	global_position = start
+	return_timer = 0.6
 	state = "AIMING"
 	active = false
 	player_node.die()

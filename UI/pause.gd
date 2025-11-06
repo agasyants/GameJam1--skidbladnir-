@@ -10,8 +10,8 @@ func _ready():
 	hide()
 
 	# Загрузка сохраненных настроек
-	var volume_data = SaveManager.load_game(volume_bus_name + '.json')
-	var sfx_data = SaveManager.load_game(sfx_bus_name + '.json')
+	var volume_data = SaveManager.load_file(volume_bus_name + '.json')
+	var sfx_data = SaveManager.load_file(sfx_bus_name + '.json')
 	$volume_slider.value = 0.8
 	$sfx_slider.value = 0.6
 	
@@ -43,6 +43,7 @@ func _on_restart_button_pressed():
 		"visceral": preload("res://Music/VisceralV2.ogg"),
 		"truth": preload("res://Music/VisceralV2.ogg"),
 	}
+	MusicManager.fade_out_and_restart(3.0)
 	get_tree().reload_current_scene()
 
 func resume():
@@ -53,10 +54,10 @@ func resume():
 func _on_volume_slider_value_changed(value: float) -> void:
 	var bus_index = AudioServer.get_bus_index(volume_bus_name)
 	AudioServer.set_bus_volume_db(bus_index, linear_to_db(value))
-	SaveManager.save_game({"volume": value}, volume_bus_name + '.json')
+	SaveManager.save({"volume": value}, volume_bus_name + '.json')
 
 
 func _on_sfx_slider_value_changed(value: float) -> void:
 	var bus_index = AudioServer.get_bus_index(sfx_bus_name)
 	AudioServer.set_bus_volume_db(bus_index, linear_to_db(value))
-	SaveManager.save_game({"sfx": value}, sfx_bus_name + '.json')
+	SaveManager.save({"sfx": value}, sfx_bus_name + '.json')
