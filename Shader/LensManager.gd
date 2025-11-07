@@ -34,7 +34,6 @@ var cameras:Array[Camera2D] = []
 
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
-	set_cameras_positions(player.global_position)
 	enemy = get_tree().get_first_node_in_group("Enemy")
 	# Создаём ColorRect для эффекта перехода
 	transition_rect = ColorRect.new()
@@ -63,9 +62,21 @@ func _ready():
 		texture_rects[key] = rect
 	
 	switch_lens_instant("normal")
+	set_cameras_positions(player.global_position)
 
-var camera_offset := Vector2(0,-140)
-var zoom := Vector2(1.0,1.0)
+var camera_offset := Vector2(0, -140)
+var zoom := Vector2(1.0, 1.0)
+var camera_frame := Rect2(0, 0, 0, 0)
+
+# Новая система лимитов:
+var limit_left := -100000.0
+var limit_right := 100000.0
+var limit_top := -100000.0
+var limit_bottom := 100000.0
+var use_limit_left := false
+var use_limit_right := false
+var use_limit_top := false
+var use_limit_bottom := false
 
 func set_camera_offset(_offset):
 	camera_offset = _offset
@@ -79,18 +90,53 @@ func set_cameras_positions(pos:Vector2):
 	for camera in cameras:
 		camera.global_position = pos
 
+# Функции для установки лимитов:
+func set_limit_left(value: float, enabled: bool = true):
+	limit_left = value
+	use_limit_left = enabled
+
+func set_limit_right(value: float, enabled: bool = true):
+	limit_right = value
+	use_limit_right = enabled
+
+func set_limit_top(value: float, enabled: bool = true):
+	limit_top = value
+	use_limit_top = enabled
+
+func set_limit_bottom(value: float, enabled: bool = true):
+	limit_bottom = value
+	use_limit_bottom = enabled
+
+func disable_all_limits():
+	use_limit_left = false
+	use_limit_right = false
+	use_limit_top = false
+	use_limit_bottom = false
+
 func _process(delta):
 	if is_transitioning:
 		transition_progress += delta * transition_speed
 		if transition_progress >= 1.0:
 			finish_transition()
 		else:
-			# Обновляем прогресс шейдера
 			transition_material.set_shader_parameter("progress", transition_progress)
 			transition_material.set_shader_parameter("center", get_head())
 	
-	for camera in cameras:
-		camera.position = camera.position.lerp(player.global_position, 1.0 - exp(-10.0 * delta))
+	if is_instance_valid(player):
+		var target_pos = player.global_position + camera_offset
+		
+		# Применяем лимиты по отдельности
+		if use_limit_left:
+			target_pos.x = max(target_pos.x, limit_left)
+		if use_limit_right:
+			target_pos.x = min(target_pos.x, limit_right)
+		if use_limit_top:
+			target_pos.y = max(target_pos.y, limit_top)
+		if use_limit_bottom:
+			target_pos.y = min(target_pos.y, limit_bottom)
+		
+		for camera in cameras:
+			camera.global_position = camera.global_position.lerp(target_pos, 1.0 - exp(-10.0 * delta))
 
 func _input(event: InputEvent):
 	if player != null:
@@ -133,25 +179,54 @@ func switch_lens_instant(_name: String):
 	if player != null:
 		update_player_physics(current_lens)
 		move_player_to_viewport(_name)
+		
+		# Проверяем Area2D в новом viewport после смены
+		call_deferred("_recheck_areas")
 
 	for key in texture_rects:
 		texture_rects[key].visible = (key == _name)
 
 	MusicManager.play_world_music(_name)
 
+func _recheck_areas():
+	# Заставляем все Area2D в текущем viewport пересчитать перекрытия
+	var current_viewport = viewports[lens_names[current_lens]]
+	for area in current_viewport.get_tree().get_nodes_in_group("CameraZone"):
+		if area.has_method("_check_initial_overlap"):
+			area._check_initial_overlap()
+
 func get_head():
-	var character_position = player.global_position + Vector2(0,-40)
-	var camera = cameras[0]
+	if not is_instance_valid(player):
+		return Vector2(0.5, 0.5)
+	
+	# Получаем текущую активную камеру
+	var current_camera = cameras[current_lens]
 	var viewport_size = get_viewport().get_visible_rect().size
-	var camera_position = camera.get_screen_center_position()
-	var relative_position = (character_position - camera_position) / camera.zoom
+	
+	# Получаем позицию головы относительно спрайта игрока
+	# Лучше добавить свойство в класс Player для позиции головы
+	var head_offset = Vector2(0, -player.get_head_height()) if player.has_method("get_head_height") else Vector2(0, -40)
+	var character_position = player.global_position + head_offset
+	
+	# Получаем позицию камеры с учетом ограничений
+	var camera_position = current_camera.global_position
+	
+	# Правильный расчет относительной позиции с учетом zoom
+	var relative_position = (character_position - camera_position) * current_camera.zoom
+	
+	# Преобразуем в координаты viewport
 	var viewport_position = relative_position + viewport_size / 2
+	
+	# Нормализуем координаты
 	var normalized = Vector2(
 		viewport_position.x / viewport_size.x,
 		viewport_position.y / viewport_size.y
 	)
-	print(normalized)
-
+	
+	# Ограничиваем значения от 0 до 1
+	normalized.x = clamp(normalized.x, 0.0, 1.0)
+	normalized.y = clamp(normalized.y, 0.0, 1.0)
+	
 	return normalized
 
 func start_transition(_name: String):

@@ -2,7 +2,6 @@ extends Area2D
 
 func _ready():
 	var save = SaveManager.load_file()
-	print(save)
 	if save and save["eyes"] > from:
 		reveal()
 	else:

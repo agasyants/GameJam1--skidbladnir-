@@ -90,6 +90,20 @@ rotation = -0.341511
 scale = Vector2(2.09585, 2.36148)
 
 [node name="CameraPlate" parent="." instance=ExtResource("6_uo5iv")]
-position = Vector2(-2711, -1406)
+position = Vector2(-2686, -1384)
 scale = Vector2(1, 6.12906)
 zoom = Vector2(0.8, 0.8)
+use_limit_left = true
+use_limit_top = true
+use_limit_bottom = true
+limit_left = -2600.0
+limit_top = -2000.0
+limit_bottom = -1400.0
+
+[node name="CameraPlate2" parent="." instance=ExtResource("6_uo5iv")]
+position = Vector2(-449, -1940)
+scale = Vector2(10.64, 6.12906)
+zoom = Vector2(0.8, 0.8)
+limit_left = -2600.0
+limit_top = -2000.0
+limit_bottom = -1400.0
