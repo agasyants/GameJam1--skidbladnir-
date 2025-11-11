@@ -85,13 +85,16 @@ tile_map_data = PackedByteArray("AAAQAAMAAAAMAAAAAAARAAMAAAAMAAAAAAASAAMAAAAMAAA
 tile_set = SubResource("TileSet_6xhby")
 
 [node name="Checkpoint" parent="." instance=ExtResource("2_ajat7")]
+visible = false
 position = Vector2(1924, -241)
 
 [node name="Checkpoint2" parent="." instance=ExtResource("2_ajat7")]
+visible = false
 position = Vector2(3753, 1614)
 scale = Vector2(1, 0.56)
 
 [node name="DeathPlate" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(-2078, -264)
 scale = Vector2(19.828, 7.06814)
 offset = Vector2(0, -220)
@@ -102,6 +105,7 @@ limit_top = -220.0
 limit_bottom = -220.0
 
 [node name="DeathPlate3" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(2662, -82)
 scale = Vector2(32, 10.988)
 offset = Vector2(0, -40)
@@ -112,8 +116,9 @@ limit_top = -100.0
 limit_bottom = -100.0
 
 [node name="DeathPlate2" parent="." instance=ExtResource("3_cyurm")]
-position = Vector2(-6, -227)
-scale = Vector2(21, 5)
+visible = false
+position = Vector2(-9, -835)
+scale = Vector2(20.76, 18.6)
 offset = Vector2(0, 0)
 zoom = Vector2(0.8, 0.8)
 use_limit_bottom = true
@@ -121,6 +126,7 @@ limit_top = -400.0
 limit_bottom = -400.0
 
 [node name="DeathPlate4" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(2660, 1507)
 scale = Vector2(30.5478, 13.0635)
 offset = Vector2(0, -40)
@@ -131,6 +137,7 @@ limit_top = 1570.0
 limit_bottom = 1570.0
 
 [node name="DeathPlate7" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(521, 2030)
 scale = Vector2(4.88, 5.72)
 offset = Vector2(0, -40)
@@ -141,6 +148,7 @@ limit_left = 100.0
 limit_bottom = 1570.0
 
 [node name="DeathPlate8" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(-81, 1423)
 scale = Vector2(4.88, 5.72)
 offset = Vector2(0, -40)
@@ -154,21 +162,27 @@ limit_bottom = 1570.0
 position = Vector2(5101, -122)
 
 [node name="DeathPlate6" parent="." instance=ExtResource("3_cyurm")]
+visible = false
 position = Vector2(4749, -277)
 scale = Vector2(9.07069, -7.4186)
 offset = Vector2(0, -300)
 zoom = Vector2(1.1, 1.1)
 use_limit_right = true
 use_limit_top = true
+use_limit_bottom = true
 limit_right = 5200.0
 limit_top = -300.0
+limit_bottom = 1500.0
 
 [node name="Checkpoint3" parent="." instance=ExtResource("2_ajat7")]
+visible = false
 position = Vector2(1394, 1306)
 
 [node name="Checkpoint4" parent="." instance=ExtResource("2_ajat7")]
+visible = false
 position = Vector2(-108, 1428)
 scale = Vector2(1, 0.6)
 
 [node name="Checkpoint5" parent="." instance=ExtResource("2_ajat7")]
+visible = false
 position = Vector2(2626, 1526)

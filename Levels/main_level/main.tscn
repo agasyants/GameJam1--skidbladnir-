@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c8lphal32dpu2"]
+[gd_scene load_steps=20 format=3 uid="uid://c8lphal32dpu2"]
 
 [ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Shader/LensManager.gd" id="1_63qhi"]
 [ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
@@ -10,6 +10,8 @@
 [ext_resource type="Shader" uid="uid://dsi1c6aevivx2" path="res://Shader/viniet.gdshader" id="7_d1nr7"]
 [ext_resource type="Script" uid="uid://dhcekjbfkfyp0" path="res://Shader/VinietController.gd" id="8_pltfe"]
 [ext_resource type="Shader" uid="uid://dttwqlo3buiwm" path="res://Levels/main_level/vibe.gdshader" id="9_7uxuk"]
+[ext_resource type="Shader" uid="uid://c6rwhfm0kip3r" path="res://Levels/main_level/TV.gdshader" id="11_kpj74"]
+[ext_resource type="Script" uid="uid://dgnt83g023c4u" path="res://UI/TV.gd" id="12_5xfoc"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -32,9 +34,17 @@ shader_parameter/distortion_speed = 2.0
 shader_parameter/distortion_intensity = 0.1
 shader_parameter/pulse_speed = 3.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5xfoc"]
+shader = ExtResource("11_kpj74")
+shader_parameter/noise_strength = 0.8
+shader_parameter/distortion_amount = 0.1
+shader_parameter/line_speed = 2.0
+shader_parameter/grain_size = 8.0
+shader_parameter/channel_switch_progress = 0.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kpj74"]
 shader = ExtResource("9_7uxuk")
-shader_parameter/brightnessMult = 4.0
+shader_parameter/brightnessMult = 3.0
 shader_parameter/wiggleMult = 0.005
 shader_parameter/chromaticAberrationOffset = 0.001
 shader_parameter/insanity = 1.0
@@ -119,7 +129,23 @@ script = ExtResource("8_pltfe")
 [node name="Pause" parent="CanvasLayer" instance=ExtResource("6_dsr8i")]
 z_index = 1000
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
+position = Vector2(-2369, -123)
+
+[node name="Post" type="CanvasLayer" parent="."]
+
+[node name="TVRect" type="ColorRect" parent="Post"]
+z_index = 300
+material = SubResource("ShaderMaterial_5xfoc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("12_5xfoc")
+
+[node name="ColorRect2" type="ColorRect" parent="Post"]
 z_index = 300
 material = SubResource("ShaderMaterial_kpj74")
 anchors_preset = 15
@@ -128,6 +154,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="Player" parent="." groups=["Player"] instance=ExtResource("6_kpj74")]
-position = Vector2(-2369, -123)

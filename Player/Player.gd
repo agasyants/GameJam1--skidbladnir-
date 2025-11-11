@@ -32,6 +32,7 @@ var active := true
 @onready var animation_player = $AnimationPlayer
 @onready var viniet = get_tree().get_first_node_in_group("V")
 @onready var lens = get_tree().get_first_node_in_group("manager")
+@onready var tv = get_node("/root/Root/Post/TVRect")
 
 func play_change_sound():
 	$Switch.play()
@@ -160,8 +161,9 @@ func die():
 		animation_player.play("dead" + state_str)
 
 func death():
+	tv.show_channel_switch()
 	active = true
-	var checkpoint = GameManager.get_checkpoint_data()
+	var checkpoint = SaveManager.load_file()
 	if checkpoint.is_empty():
 		get_tree().reload_current_scene()
 	else:

@@ -61,7 +61,12 @@ func _ready():
 		rect.visible = false
 		texture_rects[key] = rect
 	
-	switch_lens_instant("normal")
+	var l = SaveManager.load_file()
+	if l:
+		switch_lens_instant(lens_names[int(l["len"])])
+		print("aaaaaaaa:", l["len"])
+	else:
+		switch_lens_instant("normal")
 	set_cameras_positions(player.global_position)
 
 var camera_offset := Vector2(0, -140)
@@ -204,8 +209,7 @@ func get_head():
 	var viewport_size = get_viewport().get_visible_rect().size
 	
 	# Получаем позицию головы относительно спрайта игрока
-	# Лучше добавить свойство в класс Player для позиции головы
-	var head_offset = Vector2(0, -player.get_head_height()) if player.has_method("get_head_height") else Vector2(0, -40)
+	var head_offset = Vector2(0, -40)
 	var character_position = player.global_position + head_offset
 	
 	# Получаем позицию камеры с учетом ограничений
@@ -246,8 +250,10 @@ func start_transition(_name: String):
 	# Настраиваем шейдер
 	var from_texture = viewports[from_name].get_texture()
 	var to_texture = viewports[to_name].get_texture()
+	var rot = randf() * PI * 2
 	transition_material.set_shader_parameter("texture_from", from_texture)
 	transition_material.set_shader_parameter("texture_to", to_texture)
+	transition_material.set_shader_parameter("rotation", rot)
 	transition_material.set_shader_parameter("progress", 0.0)
 	# Показываем переходный слой
 	transition_rect.visible = true

@@ -38,7 +38,7 @@ func _on_restart_button_pressed():
 	GameManager.current_checkpoint_data = {}
 	resume()
 	MusicManager.world_tracks = {
-		"normal": preload("res://Music/NormalV3.ogg"),
+		"normal": preload("res://Music/NormalV2.ogg"),
 		"echo": preload("res://Music/EchoV2.ogg"),
 		"visceral": preload("res://Music/VisceralV2.ogg"),
 		"truth": preload("res://Music/VisceralV2.ogg"),

@@ -1,4 +1,5 @@
 extends Area2D
+class_name CameraZone
 
 func _ready():
 	add_to_group("CameraZone")
@@ -17,7 +18,7 @@ func _ready():
 @export var limit_right := 0.0
 @export var limit_top := 0.0
 @export var limit_bottom := 0.0
-@export var limit_transition_duration := 1.5
+@export var limit_transition_duration := 1.2
 
 func _check_initial_overlap():
 	var overlapping_bodies = get_overlapping_bodies()
@@ -32,7 +33,7 @@ func _on_body_entered(body):
 
 func _apply_camera_settings(body):
 	var lens = body.lens
-	if lens == null:
+	if not is_instance_valid(lens):
 		return
 	
 	# Offset tween
@@ -43,16 +44,20 @@ func _apply_camera_settings(body):
 	var tween2 = create_tween()
 	tween2.tween_method(lens.set_camera_zoom, lens.zoom, zoom, 1.4).set_ease(Tween.EASE_IN_OUT)
 	
-	# Limits tweens - создаём tween только если есть хоть один лимит
+	# Получаем текущую позицию камеры
+	var current_cam_pos = lens.cameras[lens.current_lens].global_position
+
 	var has_any_limit = use_limit_left or use_limit_right or use_limit_top or use_limit_bottom
-	
+
 	if has_any_limit:
 		var tween3 = create_tween().set_parallel(true)
-		
+
+		# Стартовые значения = текущая позиция камеры (или старый лимит, если он ближе)
 		if use_limit_left:
+			var start_left = max(lens.limit_left, current_cam_pos.x) if lens.use_limit_left else current_cam_pos.x
 			tween3.tween_method(
 				func(val): lens.set_limit_left(val, true),
-				lens.limit_left,
+				start_left,
 				limit_left,
 				limit_transition_duration
 			).set_ease(Tween.EASE_IN_OUT)
@@ -60,9 +65,10 @@ func _apply_camera_settings(body):
 			lens.use_limit_left = false
 		
 		if use_limit_right:
+			var start_right = min(lens.limit_right, current_cam_pos.x) if lens.use_limit_right else current_cam_pos.x
 			tween3.tween_method(
 				func(val): lens.set_limit_right(val, true),
-				lens.limit_right,
+				start_right,
 				limit_right,
 				limit_transition_duration
 			).set_ease(Tween.EASE_IN_OUT)
@@ -70,9 +76,10 @@ func _apply_camera_settings(body):
 			lens.use_limit_right = false
 		
 		if use_limit_top:
+			var start_top = max(lens.limit_top, current_cam_pos.y) if lens.use_limit_top else current_cam_pos.y
 			tween3.tween_method(
 				func(val): lens.set_limit_top(val, true),
-				lens.limit_top,
+				start_top,
 				limit_top,
 				limit_transition_duration
 			).set_ease(Tween.EASE_IN_OUT)
@@ -80,9 +87,10 @@ func _apply_camera_settings(body):
 			lens.use_limit_top = false
 		
 		if use_limit_bottom:
+			var start_bottom = min(lens.limit_bottom, current_cam_pos.y) if lens.use_limit_bottom else current_cam_pos.y
 			tween3.tween_method(
 				func(val): lens.set_limit_bottom(val, true),
-				lens.limit_bottom,
+				start_bottom,
 				limit_bottom,
 				limit_transition_duration
 			).set_ease(Tween.EASE_IN_OUT)

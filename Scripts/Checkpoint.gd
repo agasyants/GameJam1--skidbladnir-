@@ -26,5 +26,5 @@ func activate_checkpoint(player:Player):
 		$AnimationPlayer.play("activate")
 	
 	# Отключаем дальнейшие активации
-	if has_node("CollisionShape2D"):
-		$CollisionShape2D.set_deferred("disabled", true)
+	#if has_node("CollisionShape2D"):
+		#$CollisionShape2D.set_deferred("disabled", true)

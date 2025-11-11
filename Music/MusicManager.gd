@@ -46,7 +46,7 @@ func play_world_music(track_name: String):
 		print("Ошибка: Трек для мира '%s' не найден." % track_name)
 		return
 
-	print("Синхронизированное переключение на: %s" % track_name)
+	#print("Синхронизированное переключение на: %s" % track_name)
 	current_track_name = track_name
 
 	# 1. ЗАПИСЬ ПОЗИЦИИ: Получаем текущую позицию воспроизведения (в секундах)
