@@ -11,3 +11,6 @@ func set_intensity(value: float):
 
 func set_size1(value: float):
 	shader_material.set_shader_parameter("size", value)
+
+func set_center(center: Vector2):
+	shader_material.set_shader_parameter("center", center)

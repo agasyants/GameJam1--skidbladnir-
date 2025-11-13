@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://121sq8qgn4w8"]
 
-[ext_resource type="Script" uid="uid://dh74jh5rhsldh" path="res://Scripts/CameraPlate.gd" id="1_gcdqq"]
+[ext_resource type="Script" uid="uid://dh74jh5rhsldh" path="res://Plates/CameraPlate.gd" id="1_gcdqq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pu2xe"]
 size = Vector2(100, 100)

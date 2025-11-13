@@ -54,7 +54,7 @@ void fragment() {
     float scans = clamp(0.35 + 0.35 * sin(3.5 * TIME + uv.y * iResolution.y * 1.5), 0.0, 1.0);
     float s = pow(scans, 1.7);
     color *= vec3(0.4 + 0.7 * s);
-	
+
     // Brightness
     color *= brightnessMult;
 

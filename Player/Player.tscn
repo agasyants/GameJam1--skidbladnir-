@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d28md55a4eyf" path="res://Player/Player.gd" id="1_3qydi"]
 [ext_resource type="Texture2D" uid="uid://s0fnjyeonmie" path="res://Player/player-0.png" id="2_q3lat"]
-[ext_resource type="AudioStream" uid="uid://bq0bslk5fppuw" path="res://Player/Steps.ogg" id="3_tok1r"]
-[ext_resource type="AudioStream" uid="uid://crn3tbmc3yrtv" path="res://Player/Jump.ogg" id="4_ddoul"]
-[ext_resource type="AudioStream" uid="uid://yi0w3j8ub5fx" path="res://Player/Landing.ogg" id="5_8g4oa"]
+[ext_resource type="AudioStream" uid="uid://bq0bslk5fppuw" path="res://Sounds/Steps.ogg" id="3_tok1r"]
+[ext_resource type="AudioStream" uid="uid://crn3tbmc3yrtv" path="res://Sounds/Jump.ogg" id="4_ddoul"]
+[ext_resource type="AudioStream" uid="uid://yi0w3j8ub5fx" path="res://Sounds/Landing.ogg" id="5_8g4oa"]
 [ext_resource type="AudioStream" uid="uid://ikkjsuks18gk" path="res://Music/Switch.ogg" id="6_6ysni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3qydi"]

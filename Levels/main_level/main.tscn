@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://c8lphal32dpu2"]
+[gd_scene load_steps=22 format=3 uid="uid://c8lphal32dpu2"]
 
 [ext_resource type="Script" uid="uid://bv2iyviv6c85t" path="res://Shader/LensManager.gd" id="1_63qhi"]
 [ext_resource type="PackedScene" uid="uid://prju72f4cqpl" path="res://Levels/main_level/main_normal.tscn" id="2_dsr8i"]
+[ext_resource type="Script" uid="uid://bb30kqsbg1kwe" path="res://Scripts/Off.gd" id="2_t02fj"]
 [ext_resource type="PackedScene" uid="uid://ypx86nl676vu" path="res://Levels/main_level/main_echo.tscn" id="3_d1nr7"]
 [ext_resource type="PackedScene" uid="uid://ehmpjgdaqruo" path="res://Levels/main_level/main_visceral.tscn" id="4_pltfe"]
 [ext_resource type="PackedScene" uid="uid://8mrvpxdhwgw2" path="res://Levels/main_level/main_truth.tscn" id="5_7uxuk"]
@@ -12,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://dttwqlo3buiwm" path="res://Levels/main_level/vibe.gdshader" id="9_7uxuk"]
 [ext_resource type="Shader" uid="uid://c6rwhfm0kip3r" path="res://Levels/main_level/TV.gdshader" id="11_kpj74"]
 [ext_resource type="Script" uid="uid://dgnt83g023c4u" path="res://UI/TV.gd" id="12_5xfoc"]
+[ext_resource type="AudioStream" uid="uid://dju1gh1mt6q7k" path="res://Music/TV.ogg" id="12_kkqbb"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_f87w0"]
 viewport_path = NodePath("CanvasLayer/Texture_Normal/Viewport_Normal")
@@ -33,6 +35,7 @@ shader_parameter/vignette_color = Color(0, 0, 0, 1)
 shader_parameter/distortion_speed = 2.0
 shader_parameter/distortion_intensity = 0.1
 shader_parameter/pulse_speed = 3.0
+shader_parameter/center = Vector2(0.5, 0.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5xfoc"]
 shader = ExtResource("11_kpj74")
@@ -40,7 +43,7 @@ shader_parameter/noise_strength = 0.8
 shader_parameter/distortion_amount = 0.1
 shader_parameter/line_speed = 2.0
 shader_parameter/grain_size = 8.0
-shader_parameter/channel_switch_progress = 0.0
+shader_parameter/progress = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kpj74"]
 shader = ExtResource("9_7uxuk")
@@ -65,6 +68,7 @@ texture = SubResource("ViewportTexture_f87w0")
 [node name="Viewport_Normal" type="SubViewport" parent="CanvasLayer/Texture_Normal"]
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
+script = ExtResource("2_t02fj")
 
 [node name="TestNormal" parent="CanvasLayer/Texture_Normal/Viewport_Normal" instance=ExtResource("2_dsr8i")]
 
@@ -80,6 +84,7 @@ texture = SubResource("ViewportTexture_afen0")
 [node name="Viewport_Echo" type="SubViewport" parent="CanvasLayer/Texture_Echo"]
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
+script = ExtResource("2_t02fj")
 
 [node name="TestEcho" parent="CanvasLayer/Texture_Echo/Viewport_Echo" instance=ExtResource("3_d1nr7")]
 
@@ -95,6 +100,7 @@ texture = SubResource("ViewportTexture_w4v7x")
 [node name="Viewport_Visceral" type="SubViewport" parent="CanvasLayer/Texture_Visceral"]
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
+script = ExtResource("2_t02fj")
 
 [node name="TestVisceral" parent="CanvasLayer/Texture_Visceral/Viewport_Visceral" instance=ExtResource("4_pltfe")]
 
@@ -111,6 +117,7 @@ texture = SubResource("ViewportTexture_mkyii")
 [node name="Viewport_Truth" type="SubViewport" parent="CanvasLayer/Texture_Truth"]
 size = Vector2i(1920, 1080)
 render_target_update_mode = 0
+script = ExtResource("2_t02fj")
 
 [node name="TestTruth" parent="CanvasLayer/Texture_Truth/Viewport_Truth" instance=ExtResource("5_7uxuk")]
 
@@ -144,6 +151,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("12_5xfoc")
+
+[node name="StaticSound" type="AudioStreamPlayer" parent="Post/TVRect"]
+stream = ExtResource("12_kkqbb")
+volume_db = 3.741
+bus = &"SFX"
 
 [node name="ColorRect2" type="ColorRect" parent="Post"]
 z_index = 300

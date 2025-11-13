@@ -32,9 +32,16 @@ var enemy: Enemy
 
 var cameras:Array[Camera2D] = []
 
+# Кеш для оптимизации
+var cached_viewport_size: Vector2
+var head_offset := Vector2(0, -40)
+var last_rotation := 0.0
+
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	enemy = get_tree().get_first_node_in_group("Enemy")
+	cached_viewport_size = get_viewport().get_visible_rect().size
+	
 	# Создаём ColorRect для эффекта перехода
 	transition_rect = ColorRect.new()
 	transition_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -68,12 +75,18 @@ func _ready():
 	else:
 		switch_lens_instant("normal")
 	set_cameras_positions(player.global_position)
+	
+	# Подписываемся на изменение размера viewport
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
+
+func _on_viewport_size_changed():
+	cached_viewport_size = get_viewport().get_visible_rect().size
 
 var camera_offset := Vector2(0, -140)
 var zoom := Vector2(1.0, 1.0)
 var camera_frame := Rect2(0, 0, 0, 0)
 
-# Новая система лимитов:
+# Система лимитов:
 var limit_left := -100000.0
 var limit_right := 100000.0
 var limit_top := -100000.0
@@ -95,7 +108,6 @@ func set_cameras_positions(pos:Vector2):
 	for camera in cameras:
 		camera.global_position = pos
 
-# Функции для установки лимитов:
 func set_limit_left(value: float, enabled: bool = true):
 	limit_left = value
 	use_limit_left = enabled
@@ -125,23 +137,38 @@ func _process(delta):
 			finish_transition()
 		else:
 			transition_material.set_shader_parameter("progress", transition_progress)
-			transition_material.set_shader_parameter("center", get_head())
+			# Вычисляем get_head() только если нужно
+			if transition_progress < 0.95:
+				transition_material.set_shader_parameter("center", get_head())
 	
 	if is_instance_valid(player):
-		var target_pos = player.global_position + camera_offset
-		
-		# Применяем лимиты по отдельности
+		_update_camera_position(delta)
+
+# Оптимизированное обновление позиции камеры
+func _update_camera_position(delta: float):
+	var target_pos = player.global_position + camera_offset
+	
+	# Применяем лимиты
+	if use_limit_left or use_limit_right:
 		if use_limit_left:
-			target_pos.x = max(target_pos.x, limit_left)
+			target_pos.x = maxf(target_pos.x, limit_left)
 		if use_limit_right:
-			target_pos.x = min(target_pos.x, limit_right)
+			target_pos.x = minf(target_pos.x, limit_right)
+	
+	if use_limit_top or use_limit_bottom:
 		if use_limit_top:
-			target_pos.y = max(target_pos.y, limit_top)
+			target_pos.y = maxf(target_pos.y, limit_top)
 		if use_limit_bottom:
-			target_pos.y = min(target_pos.y, limit_bottom)
-		
-		for camera in cameras:
-			camera.global_position = camera.global_position.lerp(target_pos, 1.0 - exp(-10.0 * delta))
+			target_pos.y = minf(target_pos.y, limit_bottom)
+	
+	# Порог для остановки интерполяции
+	var lerp_factor = 1.0 - exp(-10.0 * delta)
+	for camera in cameras:
+		var distance_sq = camera.global_position.distance_squared_to(target_pos)
+		if distance_sq > 0.01:
+			camera.global_position = camera.global_position.lerp(target_pos, lerp_factor)
+		else:
+			camera.global_position = target_pos
 
 func _input(event: InputEvent):
 	if player != null:
@@ -173,13 +200,13 @@ func switch_lens(_name: String):
 func switch_lens_instant(_name: String):
 	# Отключаем предыдущий viewport
 	var old_viewport = viewports[lens_names[current_lens]]
-	old_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	old_viewport.turn_off()
 
 	current_lens = LENSES[_name]
 
 	# Включаем новый viewport
 	var new_viewport = viewports[_name]
-	new_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	new_viewport.turn_on()
 
 	if player != null:
 		update_player_physics(current_lens)
@@ -200,38 +227,27 @@ func _recheck_areas():
 		if area.has_method("_check_initial_overlap"):
 			area._check_initial_overlap()
 
-func get_head():
+func get_head() -> Vector2:
 	if not is_instance_valid(player):
 		return Vector2(0.5, 0.5)
 	
-	# Получаем текущую активную камеру
 	var current_camera = cameras[current_lens]
-	var viewport_size = get_viewport().get_visible_rect().size
-	
-	# Получаем позицию головы относительно спрайта игрока
-	var head_offset = Vector2(0, -40)
 	var character_position = player.global_position + head_offset
-	
-	# Получаем позицию камеры с учетом ограничений
 	var camera_position = current_camera.global_position
 	
-	# Правильный расчет относительной позиции с учетом zoom
-	var relative_position = (character_position - camera_position) * current_camera.zoom
+	# Оптимизация вычислений
+	var zoom_value = current_camera.zoom.x
+	var relative_position = (character_position - camera_position) * zoom_value
+	var viewport_position = relative_position + cached_viewport_size * 0.5
 	
-	# Преобразуем в координаты viewport
-	var viewport_position = relative_position + viewport_size / 2
+	# Используем обратное деление
+	var inv_viewport_width = 1.0 / cached_viewport_size.x
+	var inv_viewport_height = 1.0 / cached_viewport_size.y
 	
-	# Нормализуем координаты
-	var normalized = Vector2(
-		viewport_position.x / viewport_size.x,
-		viewport_position.y / viewport_size.y
+	return Vector2(
+		clampf(viewport_position.x * inv_viewport_width, 0.0, 1.0),
+		clampf(viewport_position.y * inv_viewport_height, 0.0, 1.0)
 	)
-	
-	# Ограничиваем значения от 0 до 1
-	normalized.x = clamp(normalized.x, 0.0, 1.0)
-	normalized.y = clamp(normalized.y, 0.0, 1.0)
-	
-	return normalized
 
 func start_transition(_name: String):
 	player.play_change_sound()
@@ -239,31 +255,37 @@ func start_transition(_name: String):
 	# Включаем ОБА viewport на время перехода
 	var from_viewport = viewports[lens_names[current_lens]]
 	var to_viewport = viewports[_name]
-	from_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	to_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	from_viewport.turn_on()
+	to_viewport.turn_on()
 
 	is_transitioning = true
 	transition_progress = 0.0
 	var from_name = lens_names[current_lens]
 	var to_name = _name
 	transitioning_to = to_name
-	# Настраиваем шейдер
-	var from_texture = viewports[from_name].get_texture()
-	var to_texture = viewports[to_name].get_texture()
-	var rot = randf() * PI * 2
+	
+	# Кешируем текстуры
+	var from_texture = from_viewport.get_texture()
+	var to_texture = to_viewport.get_texture()
+	last_rotation = randf() * TAU  # TAU = 2*PI
+	
 	transition_material.set_shader_parameter("texture_from", from_texture)
 	transition_material.set_shader_parameter("texture_to", to_texture)
-	transition_material.set_shader_parameter("rotation", rot)
+	transition_material.set_shader_parameter("rotation", last_rotation)
 	transition_material.set_shader_parameter("progress", 0.0)
+	
 	# Показываем переходный слой
 	transition_rect.visible = true
+	
 	# Скрываем оригинальные текстуры
-	for key in texture_rects:
-		texture_rects[key].visible = false
+	for rect in texture_rects.values():
+		rect.visible = false
+	
 	# Сразу обновляем физику игрока
 	if player != null:
 		update_player_physics(target_lens)
 		move_player_to_viewport(to_name)
+	
 	MusicManager.play_world_music(to_name)
 	print("Starting transition: ", from_name, " -> ", to_name)
 
@@ -273,18 +295,16 @@ func finish_transition():
 
 	# ВАЖНО: отключаем старый viewport
 	var old_viewport = viewports[lens_names[current_lens]]
-	old_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	old_viewport.turn_off()
 
 	current_lens = target_lens
 	var lens_name = lens_names[current_lens]
 
 	texture_rects[lens_name].visible = true
 
-
 func update_player_physics(lens_index: int):
 	player.collision_mask = 0
 	player.set_collision_mask_value(lens_index + 1, true)
-
 
 func move_player_to_viewport(lens_name: String):
 	var p = player.get_parent()

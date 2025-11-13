@@ -6,6 +6,7 @@ uniform vec4 vignette_color : source_color = vec4(0.0, 0.0, 0.0, 0.5);
 uniform float distortion_speed : hint_range(0.0, 5.0) = 2.0;
 uniform float distortion_intensity : hint_range(0.0, 0.5) = 0.1;
 uniform float pulse_speed : hint_range(0.0, 5.0) = 3.0;
+uniform vec2 center = vec2(0.5, 0.5);
 
 float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -26,7 +27,7 @@ void fragment() {
         distorted_uv.x += sin(uv.y * 20.0 + TIME * distortion_speed) * distortion_intensity * 0.1;
         distorted_uv.y += cos(uv.x * 15.0 + TIME * distortion_speed * 1.2) * distortion_intensity * 0.1;
 
-        float dist = distance(distorted_uv, vec2(0.5, 0.45));
+        float dist = distance(distorted_uv, center);
 
         // Добавляем шум для более органичного вида
         float noise = random(uv * 10.0 + TIME) * 0.2;

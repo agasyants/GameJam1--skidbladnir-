@@ -2,9 +2,9 @@
 extends Node
 
 # --- Константы и Настройки ---
-const FADE_TIME = 0.01 # Длительность плавного перехода в секундах. Подберите под ритм музыки.
-const DEFAULT_VOLUME_DB = 0.0 # Обычная громкость (0.0 - максимум без искажений)
-const SILENT_VOLUME_DB = -80.0 # Громкость, которая считается "выключенной"
+const FADE_TIME = 0.01
+const DEFAULT_VOLUME_DB = 0.0
+const SILENT_VOLUME_DB = -80.0
 
 # Словарь для легкого доступа к трекам по названию
 var world_tracks = {
@@ -22,13 +22,13 @@ var current_player: AudioStreamPlayer
 var standby_player: AudioStreamPlayer 
 
 var current_track_name = ""
-
+var fade_tween: Tween  # Переиспользуем tween
 
 func _ready():
-	# Инициализация: Оба плеера начинают с нулевой громкости и в режиме ожидания
+	# Инициализация: Оба плеера начинают с нулевой громкости
 	player_a.volume_db = SILENT_VOLUME_DB
 	player_b.volume_db = SILENT_VOLUME_DB
-	player_a.bus = "Music" # Убедитесь, что шина установлена
+	player_a.bus = "Music"
 	player_b.bus = "Music"
 	
 	current_player = player_a
@@ -36,77 +36,78 @@ func _ready():
 	
 	play_world_music("normal")
 
-
 func play_world_music(track_name: String):
 	if current_track_name == track_name:
 		return
 
 	var new_stream = world_tracks.get(track_name)
 	if new_stream == null:
-		print("Ошибка: Трек для мира '%s' не найден." % track_name)
+		push_error("Трек для мира '%s' не найден." % track_name)
 		return
 
-	#print("Синхронизированное переключение на: %s" % track_name)
 	current_track_name = track_name
 
-	# 1. ЗАПИСЬ ПОЗИЦИИ: Получаем текущую позицию воспроизведения (в секундах)
+	# 1. Получаем текущую позицию воспроизведения
 	var playback_position = current_player.get_playback_position()
 
-	# --- 2. Настройка нового плеера (Standby) ---
+	# 2. Настройка нового плеера
 	standby_player.stream = new_stream
 	standby_player.volume_db = SILENT_VOLUME_DB 
 
-	# 3. СИНХРОНИЗАЦИЯ: Включаем новый трек с полученной позицией!
+	# 3. Синхронизация: Включаем новый трек с полученной позицией
 	standby_player.play(playback_position)
 
-	# --- 4. Кроссфейд (Плавное затухание/нарастание) ---
+	# 4. Кроссфейд - используем ОДИН tween с параллельными эффектами
+	if fade_tween and fade_tween.is_valid():
+		fade_tween.kill()
+	
+	fade_tween = create_tween()
+	fade_tween.set_parallel(true)  # Параллельное выполнение эффективнее
+	fade_tween.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, FADE_TIME)
+	fade_tween.tween_property(standby_player, "volume_db", DEFAULT_VOLUME_DB, FADE_TIME)
 
-	# А) Текущий трек: Плавно затихает
-	var tween_fade_out = create_tween()
-	tween_fade_out.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, FADE_TIME)
+	await fade_tween.finished
 
-	# Б) Новый трек: Плавно набирает громкость
-	var tween_fade_in = create_tween()
-	tween_fade_in.tween_property(standby_player, "volume_db", DEFAULT_VOLUME_DB, FADE_TIME)
-
-	# --- 5. Смена Ролей ---
-	await tween_fade_out.finished
-
+	# 5. Очистка и смена ролей
 	current_player.stop()
 	current_player.stream = null
 
-	# Меняем местами роли
+	# Swap
 	var temp_player = current_player
 	current_player = standby_player
 	standby_player = temp_player
 
-# Плавно гасит музыку и начинает трек сначала
 func fade_out_and_restart(fade_duration: float = FADE_TIME):
 	print("Перезапуск текущего трека: %s" % current_track_name)
 	
-	# 1. Плавное затухание текущего плеера
-	var tween_fade = create_tween()
-	tween_fade.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
+	# Убиваем предыдущий tween
+	if fade_tween and fade_tween.is_valid():
+		fade_tween.kill()
 	
-	# 2. Ждем завершения затухания
-	await tween_fade.finished
+	# 1. Плавное затухание
+	fade_tween = create_tween()
+	fade_tween.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
 	
-	# 3. Останавливаем и перезапускаем с начала
+	await fade_tween.finished
+	
+	# 2. Перезапуск
 	current_player.stop()
 	current_player.stream = world_tracks.get("normal")
 	current_player.play(0.0)
 	
-	# 4. Плавное нарастание громкости
-	var tween_fade_in = create_tween()
-	tween_fade_in.tween_property(current_player, "volume_db", DEFAULT_VOLUME_DB, 0.01)
+	# 3. Плавное нарастание
+	fade_tween = create_tween()
+	fade_tween.tween_property(current_player, "volume_db", DEFAULT_VOLUME_DB, 0.01)
 
-# Просто плавно гасит музыку (без перезапуска)
 func fade_out(fade_duration: float = FADE_TIME):
 	print("Затухание музыки")
 	
-	var tween_fade = create_tween()
-	tween_fade.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
+	if fade_tween and fade_tween.is_valid():
+		fade_tween.kill()
 	
-	await tween_fade.finished
+	fade_tween = create_tween()
+	fade_tween.tween_property(current_player, "volume_db", SILENT_VOLUME_DB, fade_duration)
+	
+	await fade_tween.finished
 	current_player.stop()
 	current_track_name = ""

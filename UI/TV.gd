@@ -4,7 +4,7 @@ extends ColorRect
 @onready var shader_material: ShaderMaterial = material
 
 # Длительность эффекта помех
-@export var static_duration: float = 0.5
+@export var static_duration: float = 0.4
 
 # Текущее состояние
 var is_showing_static: bool = false
@@ -40,4 +40,4 @@ func show_channel_switch():
 	set_static_enabled(true)
 	
 	# Можно добавить звук помех
-	# $StaticSound.play()
+	$StaticSound.play()

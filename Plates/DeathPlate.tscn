@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dqh7c261ruq0o"]
 
-[ext_resource type="Script" uid="uid://b1wqtl87iaylh" path="res://Scripts/DeathPlate.gd" id="1_q6v5m"]
+[ext_resource type="Script" uid="uid://b1wqtl87iaylh" path="res://Plates/DeathPlate.gd" id="1_q6v5m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pu2xe"]
 size = Vector2(400, 50)

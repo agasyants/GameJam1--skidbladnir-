@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://co14fker7ixm8" path="res://Story/Hunter.tscn" id="2_1ld4w"]
 [ext_resource type="PackedScene" uid="uid://cc5ebuy27mp74" path="res://Story/Altar.tscn" id="3_dv8n4"]
 [ext_resource type="PackedScene" uid="uid://b04k8r2jki5i1" path="res://Story/Stop.tscn" id="4_txe8f"]
-[ext_resource type="PackedScene" uid="uid://121sq8qgn4w8" path="res://Scripts/CameraPlate.tscn" id="6_uo5iv"]
+[ext_resource type="PackedScene" uid="uid://121sq8qgn4w8" path="res://Plates/CameraPlate.tscn" id="6_uo5iv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7ct02"]
 texture = ExtResource("1_5y8cb")

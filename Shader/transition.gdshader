@@ -8,7 +8,7 @@ uniform vec2 center = vec2(0.5, 0.5);
 // Количество "лепестков" для звезды
 uniform float petals = 5.0;
 // 0.0 = круг, 0.3 = мягкая звезда, 1.0 = острая звезда
-uniform float shape_strength = 0.25; 
+uniform float shape_strength = 0.25;
 // Ширина "мягкой" границы (0.01 - 0.2)
 uniform float edge_width = 0.2;
 // Сила "линзы" на стыке (0.0 - 0.05)
@@ -39,7 +39,7 @@ void fragment() {
     float t = smoothstep(eased_progress - edge_width, eased_progress + edge_width, scaled_dist);
 
     // --- 5. НОВОЕ: "Смешение на стыке" (Линза + Радиальная Аберрация) ---
-    
+
     // 'edge_factor' - это наш "пульс". Он 0.0 везде,
     // кроме границы перехода, где он плавно достигает 1.0 в центре.
     float edge_factor = t * (1.0 - t) * 4.0;
@@ -51,7 +51,7 @@ void fragment() {
     // Мы "сдвигаем" UV в радиальном направлении на величину "линзы".
     // Это создает "щипок" (pinch) или "выпуклость" (bulge) на границе.
     vec2 lens_displace = radial_dir * edge_factor * lens_strength;
-    
+
     // Б) Радиальная Хроматическая Аберрация
     vec2 aberr_displace = radial_dir * edge_factor * aberr_strength;
 
