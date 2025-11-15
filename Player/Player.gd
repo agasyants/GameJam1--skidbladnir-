@@ -189,14 +189,17 @@ func die():
 		animation_player.play(anim_set["dead"])
 
 func death():
-	tv.show_channel_switch()
-	var checkpoint = SaveManager.load_file()
-	if checkpoint.is_empty():
-		active = true
-		get_tree().reload_current_scene()
-	else:
-		lens.switch_lens_instant(lens.lens_names[int(checkpoint["len"])])
-		global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
-		eye_state = int(checkpoint["eyes"])
-		inv_timer = 0.5
-		lens.set_cameras_positions(global_position)
+	if inv_timer <= 0:
+		tv.show_channel_switch()
+		var checkpoint = SaveManager.load_file()
+		if checkpoint.is_empty():
+			active = true
+			get_tree().reload_current_scene()
+		else:
+			var l = lens.lens_names[int(checkpoint["len"])]
+			if lens.lens_names[lens.current_lens] != l:
+				lens.switch_lens_instant(l)
+			global_position = Vector2(checkpoint["position_x"], checkpoint["position_y"])
+			eye_state = int(checkpoint["eyes"])
+			inv_timer = 0.5
+			lens.set_cameras_positions(global_position)

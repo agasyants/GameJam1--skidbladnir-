@@ -191,21 +191,23 @@ func _input(event: InputEvent):
 func switch_lens(_name: String):
 	if lens_names[current_lens] == _name:
 		return
+	target_lens = LENSES[_name]
 	if transitioning_to == _name:
 		switch_lens_instant(transitioning_to)
 		return
-	target_lens = LENSES[_name]
 	start_transition(_name)
 
 func switch_lens_instant(_name: String):
 	# Отключаем предыдущий viewport
 	var old_viewport = viewports[lens_names[current_lens]]
+	print("Instant: ", lens_names[current_lens], " -> ", _name)
 	old_viewport.turn_off()
 
 	current_lens = LENSES[_name]
 
 	# Включаем новый viewport
 	var new_viewport = viewports[_name]
+	transitioning_to = _name
 	new_viewport.turn_on()
 
 	if player != null:
@@ -276,6 +278,7 @@ func start_transition(_name: String):
 	
 	# Показываем переходный слой
 	transition_rect.visible = true
+	call_deferred("_recheck_areas")
 	
 	# Скрываем оригинальные текстуры
 	for rect in texture_rects.values():
@@ -287,7 +290,7 @@ func start_transition(_name: String):
 		move_player_to_viewport(to_name)
 	
 	MusicManager.play_world_music(to_name)
-	print("Starting transition: ", from_name, " -> ", to_name)
+	print("Transition: ", from_name, " -> ", to_name)
 
 func finish_transition():
 	is_transitioning = false

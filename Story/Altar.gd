@@ -36,5 +36,5 @@ func _on_body_entered(body):
 				MusicManager.fade_out_and_restart(3.5)
 				$Alt3.play()
 			body.eye_state = to
-			GameManager.set_checkpoint("altar", body.global_position, body.eye_state, lens.current_lens)
+			GameManager.set_checkpoint("altar" + str(from), body.global_position, body.eye_state, lens.current_lens)
 			

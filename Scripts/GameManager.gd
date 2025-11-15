@@ -11,7 +11,7 @@ func set_checkpoint(id: String, position: Vector2, eyes: int, lens:int):
 		"eyes": eyes,
 		"len": lens
 	}
-	print("Checkpoint saved: ", id)
+	print("Checkpoint saved: ", id, " ", position, " ", eyes, " ", lens)
 	SaveManager.save(current_checkpoint_data)
 
 func get_checkpoint_data():

@@ -5,25 +5,23 @@ extends Area2D
 @onready var lens: LensManager = get_tree().get_first_node_in_group("manager")
 
 func _ready():
-	# Правильное подключение сигнала в Godot 4
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body):
-	if body.is_in_group("Player"):  # Проверяем, что это игрок
+	if body.is_in_group("Player") and body.inv_timer <= 0.0:
 		activate_checkpoint(body)
 
 func activate_checkpoint(player:Player):
-	# Сохраняем данные в глобальном менеджере
-	GameManager.set_checkpoint(
-		checkpoint_id,
-		global_position,
-		player.eye_state,
-		lens.target_lens
-	)
+	if GameManager.get_checkpoint_data() and GameManager.get_checkpoint_data()["id"] != checkpoint_id:
+		GameManager.set_checkpoint(
+			checkpoint_id,
+			global_position,
+			player.eye_state,
+			lens.target_lens
+		)
 	
-	# Визуальный эффект (например, изменить анимацию)
-	if has_node("AnimationPlayer"):
-		$AnimationPlayer.play("activate")
+	#if has_node("AnimationPlayer"):
+		#$AnimationPlayer.play("activate")
 	
 	# Отключаем дальнейшие активации
 	#if has_node("CollisionShape2D"):
