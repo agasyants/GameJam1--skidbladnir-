@@ -504,17 +504,21 @@ libraries = {
 }
 
 [node name="Steps" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("3_tok1r")
 bus = &"SFX"
 
 [node name="Jump" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("4_ddoul")
 bus = &"SFX"
 
 [node name="Landing" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("5_8g4oa")
 bus = &"SFX"
 
 [node name="Switch" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("6_6ysni")
 bus = &"SFX"

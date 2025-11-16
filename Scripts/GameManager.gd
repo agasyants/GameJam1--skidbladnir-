@@ -3,6 +3,9 @@ extends Node
 
 var current_checkpoint_data = {}
 
+func _ready() -> void:
+	current_checkpoint_data = SaveManager.load_file()
+
 func set_checkpoint(id: String, position: Vector2, eyes: int, lens:int):
 	current_checkpoint_data = {
 		"id": id,

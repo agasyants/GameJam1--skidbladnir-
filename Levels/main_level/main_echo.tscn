@@ -112,9 +112,9 @@ position = Vector2(-107, 1396)
 checkpoint_id = "e3"
 
 [node name="CameraPlate" parent="." instance=ExtResource("4_2ihqu")]
-position = Vector2(-1069, -1474)
+position = Vector2(-1308.0001, -1480)
 rotation = 3.14159
-scale = Vector2(1.31461, -1.6174)
+scale = Vector2(5.6746087, -1.6174)
 offset = Vector2(0, 0)
 use_limit_top = true
 use_limit_bottom = true
@@ -122,12 +122,12 @@ limit_top = -1400.0
 limit_bottom = -1400.0
 
 [node name="CameraPlate2" parent="." instance=ExtResource("4_2ihqu")]
-position = Vector2(-1917, -1219)
-scale = Vector2(5.65117, 4.33431)
+position = Vector2(-1871.9999, -1319)
+scale = Vector2(4.7779956, 7.1406603)
 use_limit_top = true
 use_limit_bottom = true
-limit_top = -1450.0
-limit_bottom = -1450.0
+limit_top = -1200.0
+limit_bottom = -1200.0
 
 [node name="eye2" parent="." instance=ExtResource("5_487aq")]
 position = Vector2(-1952, -1051)

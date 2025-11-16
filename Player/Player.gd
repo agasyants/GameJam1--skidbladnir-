@@ -55,13 +55,14 @@ func _ready() -> void:
 			"dead": "dead" + state
 		}
 	
-	var loaded = SaveManager.load_file()
+	var loaded = GameManager.get_checkpoint_data()
 	if loaded:
 		eye_state = int(loaded["eyes"])
 		global_position = Vector2(loaded["position_x"], loaded["position_y"])
+	else:
+		GameManager.set_checkpoint("str", global_position, eye_state, 0)
 
 func _physics_process(delta: float) -> void:
-	# Кешируем is_on_floor() - вызывается много раз
 	cached_on_floor = is_on_floor()
 	
 	if inv_timer > 0.0:
@@ -191,7 +192,7 @@ func die():
 func death():
 	if inv_timer <= 0:
 		tv.show_channel_switch()
-		var checkpoint = SaveManager.load_file()
+		var checkpoint = GameManager.get_checkpoint_data()
 		if checkpoint.is_empty():
 			active = true
 			get_tree().reload_current_scene()

@@ -1,7 +1,7 @@
 extends Area2D
 
 func _ready():
-	var save = SaveManager.load_file()
+	var save = GameManager.get_checkpoint_data()
 	if save and save["eyes"] > from:
 		reveal()
 	else:

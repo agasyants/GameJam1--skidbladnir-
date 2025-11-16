@@ -49,14 +49,17 @@ animations = [{
 script = ExtResource("1_gir4o")
 
 [node name="Alt1" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("2_8lbbk")
 bus = &"SFX"
 
 [node name="Alt2" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("3_sxn5p")
 bus = &"SFX"
 
 [node name="Alt3" type="AudioStreamPlayer" parent="."]
+process_mode = 1
 stream = ExtResource("4_8a4ef")
 bus = &"SFX"
 

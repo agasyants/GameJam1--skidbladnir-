@@ -35,7 +35,6 @@ var cameras:Array[Camera2D] = []
 # Кеш для оптимизации
 var cached_viewport_size: Vector2
 var head_offset := Vector2(0, -40)
-var last_rotation := 0.0
 
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
@@ -68,7 +67,7 @@ func _ready():
 		rect.visible = false
 		texture_rects[key] = rect
 	
-	var l = SaveManager.load_file()
+	var l = GameManager.get_checkpoint_data()
 	if l:
 		switch_lens_instant(lens_names[int(l["len"])])
 		print("aaaaaaaa:", l["len"])
@@ -91,6 +90,10 @@ var limit_left := -100000.0
 var limit_right := 100000.0
 var limit_top := -100000.0
 var limit_bottom := 100000.0
+var target_limit_left := -100000.0
+var target_limit_right := 100000.0
+var target_limit_top := -100000.0
+var target_limit_bottom := 100000.0
 var use_limit_left := false
 var use_limit_right := false
 var use_limit_top := false
@@ -109,26 +112,32 @@ func set_cameras_positions(pos:Vector2):
 		camera.global_position = pos
 
 func set_limit_left(value: float, enabled: bool = true):
-	limit_left = value
-	use_limit_left = enabled
+	if target_limit_left != value or use_limit_left != enabled:
+		target_limit_left = value
+		limit_left = value - 800
+		use_limit_left = enabled
+		progress = 0.0
 
 func set_limit_right(value: float, enabled: bool = true):
-	limit_right = value
-	use_limit_right = enabled
+	if target_limit_right != value or use_limit_right != enabled:
+		target_limit_right = value
+		limit_right = value + 800
+		use_limit_right = enabled
+		progress = 0.0
 
 func set_limit_top(value: float, enabled: bool = true):
-	limit_top = value
-	use_limit_top = enabled
+	if target_limit_top != value or use_limit_top != enabled:
+		target_limit_top = value
+		limit_top = value - 800
+		use_limit_top = enabled
+		progress = 0.0
 
 func set_limit_bottom(value: float, enabled: bool = true):
-	limit_bottom = value
-	use_limit_bottom = enabled
-
-func disable_all_limits():
-	use_limit_left = false
-	use_limit_right = false
-	use_limit_top = false
-	use_limit_bottom = false
+	if target_limit_bottom != value or use_limit_bottom != enabled:
+		target_limit_bottom = value
+		limit_bottom = value + 800
+		use_limit_bottom = enabled
+		progress = 0.0
 
 func _process(delta):
 	if is_transitioning:
@@ -144,25 +153,40 @@ func _process(delta):
 	if is_instance_valid(player):
 		_update_camera_position(delta)
 
+# helper easing (smootherstep gives very smooth in-out)
+func ease_in_out(t: float) -> float:
+	# smootherstep: very smooth in/out
+	return t * t * (t * (6.0 * t - 15.0) + 10.0)
+
+var progress := 0.0  # accumulated progress [0..1]
+
 # Оптимизированное обновление позиции камеры
 func _update_camera_position(delta: float):
 	var target_pos = player.global_position + camera_offset
+	var step = 1.0 - exp(-0.1 * delta)
+	progress = lerp(progress, 1.0, step)
+	progress = clamp(progress, 0.0, 1.0)
+
+	# Apply in-out easing to the accumulated progress
+	var lerp_factor := ease_in_out(progress)
 	
 	# Применяем лимиты
-	if use_limit_left or use_limit_right:
-		if use_limit_left:
-			target_pos.x = maxf(target_pos.x, limit_left)
-		if use_limit_right:
-			target_pos.x = minf(target_pos.x, limit_right)
-	
-	if use_limit_top or use_limit_bottom:
-		if use_limit_top:
-			target_pos.y = maxf(target_pos.y, limit_top)
-		if use_limit_bottom:
-			target_pos.y = minf(target_pos.y, limit_bottom)
+	if use_limit_left:
+		limit_left = lerp(limit_left, target_limit_left, lerp_factor)
+		target_pos.x = maxf(target_pos.x, limit_left)
+	if use_limit_right:
+		limit_right = lerp(limit_right, target_limit_right, lerp_factor)
+		target_pos.x = minf(target_pos.x, limit_right)
+	if use_limit_top:
+		limit_top = lerp(limit_top, target_limit_top, lerp_factor)
+		target_pos.y = maxf(target_pos.y, limit_top)
+	if use_limit_bottom:
+		limit_bottom = lerp(limit_bottom, target_limit_bottom, lerp_factor)
+		target_pos.y = minf(target_pos.y, limit_bottom)
+		
+	lerp_factor = 1.0 - exp(-10.0 * delta)
 	
 	# Порог для остановки интерполяции
-	var lerp_factor = 1.0 - exp(-10.0 * delta)
 	for camera in cameras:
 		var distance_sq = camera.global_position.distance_squared_to(target_pos)
 		if distance_sq > 0.01:
@@ -222,12 +246,19 @@ func switch_lens_instant(_name: String):
 
 	MusicManager.play_world_music(_name)
 
+# ИСПРАВЛЕНИЕ #4: Оптимизированная проверка областей только в текущем viewport
 func _recheck_areas():
-	# Заставляем все Area2D в текущем viewport пересчитать перекрытия
 	var current_viewport = viewports[lens_names[current_lens]]
-	for area in current_viewport.get_tree().get_nodes_in_group("CameraZone"):
-		if area.has_method("_check_initial_overlap"):
-			area._check_initial_overlap()
+	# Рекурсивно ищем CameraZone только в текущем viewport
+	_recheck_areas_recursive(current_viewport)
+
+func _recheck_areas_recursive(node: Node):
+	if node is CameraZone:
+		if node.has_method("_check_initial_overlap"):
+			node._check_initial_overlap()
+	
+	for child in node.get_children():
+		_recheck_areas_recursive(child)
 
 func get_head() -> Vector2:
 	if not is_instance_valid(player):
@@ -269,7 +300,7 @@ func start_transition(_name: String):
 	# Кешируем текстуры
 	var from_texture = from_viewport.get_texture()
 	var to_texture = to_viewport.get_texture()
-	last_rotation = randf() * TAU  # TAU = 2*PI
+	var last_rotation = randf() * TAU  # TAU = 2*PI
 	
 	transition_material.set_shader_parameter("texture_from", from_texture)
 	transition_material.set_shader_parameter("texture_to", to_texture)
@@ -310,7 +341,16 @@ func update_player_physics(lens_index: int):
 	player.set_collision_mask_value(lens_index + 1, true)
 
 func move_player_to_viewport(lens_name: String):
-	var p = player.get_parent()
-	if p != null:
-		p.remove_child.call_deferred(player)
-	viewports[lens_name].add_child.call_deferred(player)
+	call_deferred("_move_player_deferred", lens_name)
+
+func _move_player_deferred(lens_name: String):
+	if not is_instance_valid(player):
+		return
+	
+	var old_parent = player.get_parent()
+	if old_parent != null:
+		old_parent.remove_child(player)
+	
+	var target_viewport = viewports.get(lens_name)
+	if target_viewport != null:
+		target_viewport.add_child(player)
