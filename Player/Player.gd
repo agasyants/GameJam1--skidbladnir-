@@ -14,7 +14,7 @@ const COYOTE_TIME = 0.08
 const JUMP_BUFFER = 0.12
 const STUCK_TIME = 8.0
 const MAX_FALL_SPEED = 1400.0
-const STUCK_CHECK_INTERVAL = 0.05  # Проверяем каждые 50ms
+const STUCK_CHECK_INTERVAL = 0.1
 
 # Состояния
 enum State { IDLE, WALK, JUMP, FALL }
@@ -30,6 +30,8 @@ var inv_timer := 0.0
 var stuck_check_timer := 0.0
 
 var active := true
+var in_transition := false
+var stuck := false
 
 # Кеш
 var cached_on_floor := false
@@ -61,6 +63,8 @@ func _ready() -> void:
 		global_position = Vector2(loaded["position_x"], loaded["position_y"])
 	else:
 		GameManager.set_checkpoint("str", global_position, eye_state, 0)
+	
+	lens.set_cameras_positions(global_position)
 
 func _physics_process(delta: float) -> void:
 	cached_on_floor = is_on_floor()
@@ -88,8 +92,10 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_update_state()
 	
-	move_and_slide()
+	if not in_transition:
+		move_and_slide()
 	_check_stuck(delta)
+	_update_stuck(delta)
 
 # Оптимизированная проверка застревания
 func _check_stuck(delta: float) -> void:
@@ -98,14 +104,18 @@ func _check_stuck(delta: float) -> void:
 		return
 	
 	stuck_check_timer = 0.0
-	
-	if test_move(global_transform, Vector2.ZERO):
+	stuck = test_move(global_transform, Vector2.ZERO)
+
+func _update_stuck(delta):
+	if stuck:
 		stuck_timer += delta
 		viniet.set_intensity(stuck_timer / STUCK_TIME)
 		viniet.set_center(lens.get_head())
 		viniet.set_size1(1.1 - stuck_timer / STUCK_TIME * 0.7)
 		if stuck_timer > STUCK_TIME:
 			die()
+			stuck_check_timer = 0.0
+			stuck_timer = 0.0
 	else:
 		viniet.set_intensity(0.0)
 		viniet.set_center(lens.get_head())
@@ -141,7 +151,6 @@ func _handle_jump() -> void:
 		jump_buffer_timer = 0
 		coyote_timer = 0
 	
-	# РЕЗКОЕ снижение прыжка при отпускании
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= 0.4
 
@@ -192,6 +201,8 @@ func die():
 func death():
 	if inv_timer <= 0:
 		tv.show_channel_switch()
+		stuck = false
+		_update_stuck(0)
 		var checkpoint = GameManager.get_checkpoint_data()
 		if checkpoint.is_empty():
 			active = true

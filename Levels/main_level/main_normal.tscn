@@ -97,15 +97,15 @@ checkpoint_id = "s1"
 position = Vector2(-2078, -264)
 scale = Vector2(19.828, 7.06814)
 offset = Vector2(0, -220)
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(1.15, 1.15)
 use_limit_top = true
 use_limit_bottom = true
 limit_top = -220.0
 limit_bottom = -220.0
 
 [node name="DeathPlate3" parent="." instance=ExtResource("3_cyurm")]
-position = Vector2(2662, -82)
-scale = Vector2(32, 10.988)
+position = Vector2(2611, -82)
+scale = Vector2(30.88, 10.988)
 offset = Vector2(0, -40)
 zoom = Vector2(0.9, 0.9)
 use_limit_top = true
@@ -125,7 +125,7 @@ limit_bottom = -400.0
 [node name="DeathPlate4" parent="." instance=ExtResource("3_cyurm")]
 position = Vector2(2660, 1507)
 scale = Vector2(30.5478, 13.0635)
-offset = Vector2(0, -40)
+offset = Vector2(0, 300)
 zoom = Vector2(0.8, 0.8)
 use_limit_top = true
 use_limit_bottom = true

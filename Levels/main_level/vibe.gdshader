@@ -44,7 +44,7 @@ void fragment() {
 
     // Vignette
     float vignette = (0.0 + 1.0 * 16.0 * uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y));
-    color *= vec3(pow(vignette, 0.3));
+    color *= vec3(pow(vignette, 0.1));
 
     // Color grading
     color *= vec3(0.8, 1.12, 1.1); // Синий-зелёный оттенок

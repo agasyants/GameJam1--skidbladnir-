@@ -53,8 +53,7 @@ texture_region_size = Vector2i(50, 50)
 
 [sub_resource type="TileSet" id="TileSet_17ync"]
 tile_size = Vector2i(50, 50)
-physics_layer_0/collision_layer = 4
-physics_layer_0/collision_mask = 4
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_7ct02")
 
 [node name="TestVisceral" type="Node2D"]
@@ -101,7 +100,7 @@ limit_top = -2000.0
 limit_bottom = -1400.0
 
 [node name="CameraPlate2" parent="." instance=ExtResource("6_uo5iv")]
-position = Vector2(-449, -1940)
+position = Vector2(-440.99997, -1731)
 scale = Vector2(10.64, 6.12906)
 zoom = Vector2(0.8, 0.8)
 use_limit_bottom = true

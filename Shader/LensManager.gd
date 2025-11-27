@@ -83,7 +83,7 @@ func _on_viewport_size_changed():
 
 var camera_offset := Vector2(0, -140)
 var zoom := Vector2(1.0, 1.0)
-var camera_frame := Rect2(0, 0, 0, 0)
+var cameras_position := Vector2(0.0, 0.0)
 
 # Система лимитов:
 var limit_left := -100000.0
@@ -108,36 +108,41 @@ func set_camera_zoom(_zoom):
 		camera.zoom = _zoom
 
 func set_cameras_positions(pos:Vector2):
+	cameras_position = pos
 	for camera in cameras:
 		camera.global_position = pos
 
 func set_limit_left(value: float, enabled: bool = true):
 	if target_limit_left != value or use_limit_left != enabled:
 		target_limit_left = value
-		limit_left = value - 800
+		limit_left = min(cameras_position.x, value)
 		use_limit_left = enabled
-		progress = 0.0
+		if target_limit_left != limit_left:
+			progress = 0.0
 
 func set_limit_right(value: float, enabled: bool = true):
 	if target_limit_right != value or use_limit_right != enabled:
 		target_limit_right = value
-		limit_right = value + 800
+		limit_right = max(cameras_position.x, value)
 		use_limit_right = enabled
-		progress = 0.0
+		if target_limit_right != limit_right:
+			progress = 0.0
 
 func set_limit_top(value: float, enabled: bool = true):
 	if target_limit_top != value or use_limit_top != enabled:
 		target_limit_top = value
-		limit_top = value - 800
+		limit_top = min(cameras_position.y, value)
 		use_limit_top = enabled
-		progress = 0.0
+		if target_limit_top != limit_top:
+			progress = 0.0
 
 func set_limit_bottom(value: float, enabled: bool = true):
 	if target_limit_bottom != value or use_limit_bottom != enabled:
 		target_limit_bottom = value
-		limit_bottom = value + 800
+		limit_bottom = max(cameras_position.y, value)
 		use_limit_bottom = enabled
-		progress = 0.0
+		if target_limit_bottom != limit_bottom:
+			progress = 0.0
 
 func _process(delta):
 	if is_transitioning:
@@ -155,21 +160,25 @@ func _process(delta):
 
 # helper easing (smootherstep gives very smooth in-out)
 func ease_in_out(t: float) -> float:
-	# smootherstep: very smooth in/out
 	return t * t * (t * (6.0 * t - 15.0) + 10.0)
 
-var progress := 0.0  # accumulated progress [0..1]
+var progress := 0.0
 
 # Оптимизированное обновление позиции камеры
 func _update_camera_position(delta: float):
 	var target_pos = player.global_position + camera_offset
-	var step = 1.0 - exp(-0.1 * delta)
+	var step = 1.0 - exp(-1.0 * delta)
 	progress = lerp(progress, 1.0, step)
 	progress = clamp(progress, 0.0, 1.0)
 
-	# Apply in-out easing to the accumulated progress
 	var lerp_factor := ease_in_out(progress)
-	
+	var lerp_x := 12.0
+	var lerp_y := 12.0
+	if 0.0 < progress and progress < 0.9:
+		if use_limit_left or use_limit_right:
+			lerp_x = 2.0 + progress * 10
+		if use_limit_top or use_limit_bottom:
+			lerp_y = 2.0 + progress * 10
 	# Применяем лимиты
 	if use_limit_left:
 		limit_left = lerp(limit_left, target_limit_left, lerp_factor)
@@ -183,16 +192,19 @@ func _update_camera_position(delta: float):
 	if use_limit_bottom:
 		limit_bottom = lerp(limit_bottom, target_limit_bottom, lerp_factor)
 		target_pos.y = minf(target_pos.y, limit_bottom)
-		
-	lerp_factor = 1.0 - exp(-10.0 * delta)
 	
+	var lerp_factor_x = 1.0 - exp(-lerp_x * delta)
+	var lerp_factor_y = 1.0 - exp(-lerp_y * delta)
+	
+	var distance_sq = cameras_position.distance_squared_to(target_pos)
+	if distance_sq > 0.01:
+		cameras_position.x = lerp(cameras_position.x, target_pos.x, lerp_factor_x)
+		cameras_position.y = lerp(cameras_position.y, target_pos.y, lerp_factor_y)
+	else:
+		cameras_position = target_pos
 	# Порог для остановки интерполяции
 	for camera in cameras:
-		var distance_sq = camera.global_position.distance_squared_to(target_pos)
-		if distance_sq > 0.01:
-			camera.global_position = camera.global_position.lerp(target_pos, lerp_factor)
-		else:
-			camera.global_position = target_pos
+		camera.global_position = cameras_position
 
 func _input(event: InputEvent):
 	if player != null:
@@ -235,7 +247,7 @@ func switch_lens_instant(_name: String):
 	new_viewport.turn_on()
 
 	if player != null:
-		update_player_physics(current_lens)
+		#update_player_physics(current_lens)
 		move_player_to_viewport(_name)
 		
 		# Проверяем Area2D в новом viewport после смены
@@ -314,20 +326,20 @@ func start_transition(_name: String):
 	# Скрываем оригинальные текстуры
 	for rect in texture_rects.values():
 		rect.visible = false
+	MusicManager.play_world_music(to_name)
+	print("Transition: ", from_name, " -> ", to_name)
 	
 	# Сразу обновляем физику игрока
 	if player != null:
-		update_player_physics(target_lens)
+		#update_player_physics(target_lens)
 		move_player_to_viewport(to_name)
-	
-	MusicManager.play_world_music(to_name)
-	print("Transition: ", from_name, " -> ", to_name)
+
+#func a():
 
 func finish_transition():
 	is_transitioning = false
 	transition_rect.visible = false
 
-	# ВАЖНО: отключаем старый viewport
 	var old_viewport = viewports[lens_names[current_lens]]
 	old_viewport.turn_off()
 
@@ -335,10 +347,6 @@ func finish_transition():
 	var lens_name = lens_names[current_lens]
 
 	texture_rects[lens_name].visible = true
-
-func update_player_physics(lens_index: int):
-	player.collision_mask = 0
-	player.set_collision_mask_value(lens_index + 1, true)
 
 func move_player_to_viewport(lens_name: String):
 	call_deferred("_move_player_deferred", lens_name)
