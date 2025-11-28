@@ -30,7 +30,6 @@ var inv_timer := 0.0
 var stuck_check_timer := 0.0
 
 var active := true
-var in_transition := false
 var stuck := false
 
 # Кеш
@@ -92,7 +91,7 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_update_state()
 	
-	if not in_transition:
+	if not stuck:
 		move_and_slide()
 	_check_stuck(delta)
 	_update_stuck(delta)
@@ -100,7 +99,7 @@ func _physics_process(delta: float) -> void:
 # Оптимизированная проверка застревания
 func _check_stuck(delta: float) -> void:
 	stuck_check_timer += delta
-	if stuck_check_timer < STUCK_CHECK_INTERVAL:
+	if stuck_check_timer < STUCK_CHECK_INTERVAL and delta != 0:
 		return
 	
 	stuck_check_timer = 0.0

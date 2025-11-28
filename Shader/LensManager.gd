@@ -70,7 +70,6 @@ func _ready():
 	var l = GameManager.get_checkpoint_data()
 	if l:
 		switch_lens_instant(lens_names[int(l["len"])])
-		print("aaaaaaaa:", l["len"])
 	else:
 		switch_lens_instant("normal")
 	set_cameras_positions(player.global_position)
@@ -362,3 +361,4 @@ func _move_player_deferred(lens_name: String):
 	var target_viewport = viewports.get(lens_name)
 	if target_viewport != null:
 		target_viewport.add_child(player)
+		player._check_stuck(0)

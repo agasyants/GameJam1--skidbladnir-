@@ -50,7 +50,6 @@ func _apply_camera_settings(body):
 	active_tweens.append(tween2)
 	tween2.tween_method(lens.set_camera_zoom, lens.zoom, zoom, 1.4).set_ease(Tween.EASE_IN_OUT)
 
-	# Стартовые значения = текущая позиция камеры (или старый лимит, если он ближе)
 	if use_limit_left:
 		lens.set_limit_left(limit_left, true)
 	else:
