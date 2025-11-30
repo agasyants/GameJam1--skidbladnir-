@@ -16,7 +16,7 @@ position = Vector2(0, -2)
 scale = Vector2(1.42, 1.42)
 texture = ExtResource("2_7bo3q")
 
-[node name="Kaka-chardge" type="Sprite2D" parent="."]
+[node name="Kaka-charge" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(-1.99998, 3.00002)
 scale = Vector2(1.36, 1.36)

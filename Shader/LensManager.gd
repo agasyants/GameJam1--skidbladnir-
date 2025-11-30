@@ -35,8 +35,10 @@ var cameras:Array[Camera2D] = []
 # Кеш для оптимизации
 var cached_viewport_size: Vector2
 var head_offset := Vector2(0, -40)
+@onready var tv = get_node("/root/Root/Post/TVRect")
 
 func _ready():
+	
 	player = get_tree().get_first_node_in_group("Player")
 	enemy = get_tree().get_first_node_in_group("Enemy")
 	cached_viewport_size = get_viewport().get_visible_rect().size
@@ -76,6 +78,29 @@ func _ready():
 	
 	# Подписываемся на изменение размера viewport
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
+	# WARMUP: прогреваем систему
+	await get_tree().process_frame
+	tv.show_channel_switch()
+	_warmup_system()
+
+func _warmup_system():
+	# 1. Прогрев шейдера
+	transition_rect.visible = true
+	transition_material.set_shader_parameter("progress", 0.5)
+	transition_material.set_shader_parameter("center", Vector2(0.5, 0.5))
+	
+	# 2. Прогрев viewport'ов
+	for key in viewports:
+		viewports[key].turn_on()
+	
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	# 3. Возврат в исходное состояние
+	transition_rect.visible = false
+	for key in viewports:
+		if key != lens_names[current_lens]:
+			viewports[key].turn_off()
 
 func _on_viewport_size_changed():
 	cached_viewport_size = get_viewport().get_visible_rect().size
@@ -166,18 +191,18 @@ var progress := 0.0
 # Оптимизированное обновление позиции камеры
 func _update_camera_position(delta: float):
 	var target_pos = player.global_position + camera_offset
-	var step = 1.0 - exp(-1.0 * delta)
+	var step = 1.0 - exp(-0.8 * delta)
 	progress = lerp(progress, 1.0, step)
 	progress = clamp(progress, 0.0, 1.0)
 
 	var lerp_factor := ease_in_out(progress)
-	var lerp_x := 12.0
-	var lerp_y := 12.0
+	var lerp_x := 11.0
+	var lerp_y := 11.0
 	if 0.0 < progress and progress < 0.9:
 		if use_limit_left or use_limit_right:
-			lerp_x = 2.0 + progress * 10
+			lerp_x = 1.2 + progress * 10
 		if use_limit_top or use_limit_bottom:
-			lerp_y = 2.0 + progress * 10
+			lerp_y = 1.2 + progress * 10
 	# Применяем лимиты
 	if use_limit_left:
 		limit_left = lerp(limit_left, target_limit_left, lerp_factor)
@@ -330,10 +355,7 @@ func start_transition(_name: String):
 	
 	# Сразу обновляем физику игрока
 	if player != null:
-		#update_player_physics(target_lens)
 		move_player_to_viewport(to_name)
-
-#func a():
 
 func finish_transition():
 	is_transitioning = false

@@ -104,8 +104,8 @@ limit_top = -220.0
 limit_bottom = -220.0
 
 [node name="DeathPlate3" parent="." instance=ExtResource("3_cyurm")]
-position = Vector2(2611, -82)
-scale = Vector2(30.88, 10.988)
+position = Vector2(2444.0002, -82)
+scale = Vector2(27.360003, 10.988)
 offset = Vector2(0, -40)
 zoom = Vector2(0.9, 0.9)
 use_limit_top = true
@@ -157,7 +157,7 @@ position = Vector2(5101, -122)
 
 [node name="DeathPlate6" parent="." instance=ExtResource("3_cyurm")]
 position = Vector2(4624, -277)
-scale = Vector2(9.07069, -7.4186)
+scale = Vector2(15.470692, -7.4186)
 offset = Vector2(0, -300)
 zoom = Vector2(1.1, 1.1)
 use_limit_right = true

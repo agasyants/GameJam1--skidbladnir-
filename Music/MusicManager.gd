@@ -78,8 +78,6 @@ func play_world_music(track_name: String):
 	standby_player = temp_player
 
 func fade_out_and_restart(fade_duration: float = FADE_TIME):
-	print("Перезапуск текущего трека: %s" % current_track_name)
-	
 	# Убиваем предыдущий tween
 	if fade_tween and fade_tween.is_valid():
 		fade_tween.kill()
@@ -100,8 +98,6 @@ func fade_out_and_restart(fade_duration: float = FADE_TIME):
 	fade_tween.tween_property(current_player, "volume_db", DEFAULT_VOLUME_DB, 0.01)
 
 func fade_out(fade_duration: float = FADE_TIME):
-	print("Затухание музыки")
-	
 	if fade_tween and fade_tween.is_valid():
 		fade_tween.kill()
 	

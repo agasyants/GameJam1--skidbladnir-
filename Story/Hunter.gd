@@ -75,12 +75,12 @@ func change_state(new_state: String):
 		"AIMING":
 			state_timer = aim_time
 			$Kaka.hide()
-			$"Kaka-chardge".show()
+			$"Kaka-charge".show()
 		"CHARGING":
 			charge_distance_traveled = 0.0
 			charge_progress = 0.0
 			$Kaka.show()
-			$"Kaka-chardge".hide()
+			$"Kaka-charge".hide()
 			$Attack.play()
 	
 	if sprite and aim_direction.length() > 0:
